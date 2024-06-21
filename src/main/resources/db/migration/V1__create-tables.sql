@@ -1,0 +1,55 @@
+CREATE TABLE tb_usuario (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  cpf VARCHAR(14) NOT NULL,
+  nome VARCHAR(255) NOT NULL,
+  senha VARCHAR(255) NOT NULL,
+  ativo BOOLEAN NOT NULL DEFAULT TRUE,
+  tipo ENUM('ANALISTA','ALUNO'),
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE tb_aula (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  sala VARCHAR(255) NOT NULL,
+  data_inicio DATETIME NOT NULL,
+  data_fim DATETIME NOT NULL,
+  id_treinamento BIGINT UNSIGNED NOT NULL,
+  ativo BOOLEAN NOT NULL DEFAULT TRUE,
+  PRIMARY KEY (id)
+);
+
+
+CREATE TABLE tb_aluno_aula (
+  id_aula BIGINT UNSIGNED NOT NULL,
+  id_aluno BIGINT UNSIGNED NOT NULL,
+  aula_concluida BOOLEAN NOT NULL DEFAULT FALSE,
+  PRIMARY KEY (id_aula, id_aluno)
+);
+
+
+CREATE TABLE tb_apostila (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  id_treinamento BIGINT UNSIGNED NOT NULL,
+  link VARCHAR(255) NOT NULL,
+  PRIMARY KEY (id)
+);
+
+CREATE TABLE tb_treinamento (
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+  nome VARCHAR(255) NOT NULL,
+  descricao VARCHAR(255) NOT NULL,
+  formato ENUM('PRESENCIAL','ONLINE'),
+  ativo BOOLEAN NOT NULL DEFAULT TRUE,
+  data_inicio DATE NOT NULL,
+  data_fim DATE NOT NULL,
+  capa VARCHAR(255),
+  nome_professor VARCHAR(255),
+  cpf_professor VARCHAR(14),
+  PRIMARY KEY (id)
+);
+
+
+ALTER TABLE tb_aula ADD FOREIGN KEY (id_treinamento) REFERENCES tb_treinamento(id) ON DELETE CASCADE;
+ALTER TABLE tb_aluno_aula ADD FOREIGN KEY (id_aula) REFERENCES tb_aula(id) ON DELETE CASCADE;
+ALTER TABLE tb_aluno_aula ADD FOREIGN KEY (id_aluno) REFERENCES tb_usuario(id) ON DELETE CASCADE;
+ALTER TABLE tb_apostila ADD FOREIGN KEY (id_treinamento) REFERENCES tb_treinamento(id) ON DELETE CASCADE;
