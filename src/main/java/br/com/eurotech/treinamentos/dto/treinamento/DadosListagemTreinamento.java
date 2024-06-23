@@ -1,4 +1,4 @@
-package br.com.eurotech.treinamentos.dto;
+package br.com.eurotech.treinamentos.dto.treinamento;
 
 import java.time.LocalDate;
 import java.util.Set;

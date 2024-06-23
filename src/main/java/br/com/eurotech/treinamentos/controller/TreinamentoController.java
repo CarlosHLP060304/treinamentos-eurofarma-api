@@ -14,25 +14,25 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.eurotech.treinamentos.dto.DadosAlteracaoTreinamento;
-import br.com.eurotech.treinamentos.dto.DadosCadastroTreinamento;
-import br.com.eurotech.treinamentos.dto.DadosDetalhamentoTreinamento;
-import br.com.eurotech.treinamentos.dto.DadosListagemTreinamento;
+import br.com.eurotech.treinamentos.dto.treinamento.DadosAlteracaoTreinamento;
+import br.com.eurotech.treinamentos.dto.treinamento.DadosCadastroTreinamento;
+import br.com.eurotech.treinamentos.dto.treinamento.DadosDetalhamentoTreinamento;
+import br.com.eurotech.treinamentos.dto.treinamento.DadosListagemTreinamento;
 import br.com.eurotech.treinamentos.model.Treinamento;
 import br.com.eurotech.treinamentos.repository.TreinamentoRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
-@Controller
+@RestController
 @RequestMapping("/treinamento")
 public class TreinamentoController {
     
     @Autowired
     private TreinamentoRepository repository;
 
-    
     @GetMapping
     public ResponseEntity<Page<DadosListagemTreinamento>> listarTreinamentos(Pageable paginacao){
         var page = repository.findAll(paginacao).map(DadosListagemTreinamento::new);

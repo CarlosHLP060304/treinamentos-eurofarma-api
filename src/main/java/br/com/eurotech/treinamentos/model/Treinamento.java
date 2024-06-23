@@ -3,8 +3,8 @@ package br.com.eurotech.treinamentos.model;
 import java.time.LocalDate;
 import java.util.Set;
 
-import br.com.eurotech.treinamentos.dto.DadosAlteracaoTreinamento;
-import br.com.eurotech.treinamentos.dto.DadosCadastroTreinamento;
+import br.com.eurotech.treinamentos.dto.treinamento.DadosAlteracaoTreinamento;
+import br.com.eurotech.treinamentos.dto.treinamento.DadosCadastroTreinamento;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

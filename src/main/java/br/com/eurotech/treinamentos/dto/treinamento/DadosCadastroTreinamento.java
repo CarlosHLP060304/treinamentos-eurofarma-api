@@ -1,4 +1,4 @@
-package br.com.eurotech.treinamentos.dto;
+package br.com.eurotech.treinamentos.dto.treinamento;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -9,7 +9,7 @@ import br.com.eurotech.treinamentos.model.Formato;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
-public record DadosAlteracaoTreinamento(
+public record DadosCadastroTreinamento(
 
      @NotBlank(message = "Campo de nome não pode estar vazio")
      String nome,
@@ -18,6 +18,8 @@ public record DadosAlteracaoTreinamento(
      String descricao,
 
      Formato formato,
+
+     Boolean ativo,
     
      @NotNull(message = "Campo de data de início não pode estar vazio")
      LocalDate dataInicio,
