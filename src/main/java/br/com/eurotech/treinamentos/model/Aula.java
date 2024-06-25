@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.print.DocFlavor.STRING;
 
+import br.com.eurotech.treinamentos.dto.aula.DadosAlteracaoAula;
+import br.com.eurotech.treinamentos.dto.aula.DadosCadastroAula;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -44,7 +46,7 @@ public class Aula {
     private Treinamento treinamento;
 
 
-    private Boolean ativo;
+    private Boolean ativo = true;
 
     @OneToMany(mappedBy = "aula")
     private List<AlunoAula> alunoAula;
@@ -52,6 +54,19 @@ public class Aula {
 
     public Long getTempoAula(){
         return Duration.between(dataInicio, dataFim).toMinutes();
+    }
+
+    public void setAula(DadosAlteracaoAula dados) {
+        this.sala = dados.sala();
+        this.dataInicio = dados.dataInicio();
+        this.dataFim = dados.dataFim();
+    }
+
+    public Aula(DadosCadastroAula dados) {
+        this.sala = dados.sala();
+        this.dataInicio = dados.dataInicio();
+        this.dataFim = dados.dataFim();
+        this.treinamento = dados.treinamento();
     }
     
 }
