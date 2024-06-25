@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,7 +39,7 @@ public class UsuarioController{
     }
     
     @GetMapping("/{id}")
-    public ResponseEntity exibirUsuario(@RequestParam("id") Long id){
+    public ResponseEntity exibirUsuario(@PathVariable("id") Long id){
         Usuario usuario = repository.getReferenceById(id);
         return ResponseEntity.ok(new DadosDetalhamentoUsuario(usuario));
     }
@@ -54,7 +55,7 @@ public class UsuarioController{
     
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity alterarUsuario(@RequestParam("id") Long id,@RequestBody @Valid DadosAlteracaoUsuario dados){
+    public ResponseEntity alterarUsuario(@PathVariable("id") Long id,@RequestBody @Valid DadosAlteracaoUsuario dados){
         Usuario usuario = repository.getReferenceById(id);
         usuario.setUsuario(dados);
         return ResponseEntity.noContent().build();
@@ -62,7 +63,7 @@ public class UsuarioController{
 
     @DeleteMapping("/{id}")
     @Transactional
-    public ResponseEntity excluirUsuario(@RequestParam("id") Long id){
+    public ResponseEntity excluirUsuario(@PathVariable("id") Long id){
         Usuario usuario = repository.getReferenceById(id);
         usuario.setAtivo(false);
         return ResponseEntity.noContent().build();
