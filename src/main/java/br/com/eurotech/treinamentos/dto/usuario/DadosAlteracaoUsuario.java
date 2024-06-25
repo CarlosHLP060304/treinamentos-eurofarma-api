@@ -4,6 +4,7 @@ import org.hibernate.validator.constraints.br.CPF;
 
 import br.com.eurotech.treinamentos.model.TipoUsuario;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record DadosAlteracaoUsuario(
     @NotBlank(message = "O campo CPF não pode estar vazio")
@@ -16,7 +17,7 @@ public record DadosAlteracaoUsuario(
     @NotBlank(message = "O campo de senha não pode estar vazio")
     String senha,
 
-    @NotBlank(message = "O campo de especialidade não pode estar vazio")
+    @NotNull(message = "O campo de especialidade não pode estar vazio")
     TipoUsuario tipo
 ) {
 } 
