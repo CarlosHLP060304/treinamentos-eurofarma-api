@@ -32,11 +32,8 @@ public record DadosAlteracaoTreinamento(
      String nomeProfessor,
 
      @NotBlank(message = "Campo de cpf do professor não pode estar vazio")
-     String cpfProfessor,
+     String cpfProfessor
       
-     Set<Aula> aulas,
-
-     Set<Apostila> apostilas
 ){
 
     
