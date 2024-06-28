@@ -1,6 +1,11 @@
 package br.com.eurotech.treinamentos.model;
 
+import java.util.Collection;
 import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import br.com.eurotech.treinamentos.dto.usuario.DadosAlteracaoUsuario;
 import br.com.eurotech.treinamentos.dto.usuario.DadosCadastroUsuario;
@@ -23,7 +28,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Usuario {
+public class Usuario implements UserDetails{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,6 +61,27 @@ public class Usuario {
         this.cpf = dados.cpf();
         this.senha = dados.senha();
         this.tipo = dados.tipo();    
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.tipo == TipoUsuario.ANALISTA) 
+            return List.of(new SimpleGrantedAuthority("ROLE_ANALISTA"));
+        else
+            return List.of(new SimpleGrantedAuthority("ROLE_ALUNO"));    
+    }
+
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+
+    @Override
+    public String getUsername() {
+       return cpf;
     }
 
     

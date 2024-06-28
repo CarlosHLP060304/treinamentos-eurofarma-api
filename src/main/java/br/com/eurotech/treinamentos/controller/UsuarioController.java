@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -48,6 +49,9 @@ public class UsuarioController{
     @Transactional
     public ResponseEntity insert(@RequestBody @Valid DadosCadastroUsuario dados,UriComponentsBuilder uriBuilder){
         Usuario usuario = new Usuario(dados);
+        String encryptedPassword = new BCryptPasswordEncoder().encode(dados.senha());
+        usuario.setSenha(encryptedPassword);
+        //System.out.println(usuario);
         repository.save(usuario);
         var uri =uriBuilder.path("/usuario/{id}").buildAndExpand(usuario.getId()).toUri();
         return ResponseEntity.created(uri).body(new DadosDetalhamentoUsuario(usuario));
