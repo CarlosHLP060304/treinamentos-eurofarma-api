@@ -61,8 +61,6 @@ public class Treinamento {
         this.nome = dto.nome();
         this.formato = dto.formato();
         this.ativo = dto.ativo();
-        this.apostilas = dto.apostilas();
-        this.aulas = dto.aulas();
         this.capa = dto.capa();
         this.nomeProfessor = dto.nomeProfessor();
         this.cpfProfessor = dto.cpfProfessor();
@@ -80,8 +78,6 @@ public class Treinamento {
     public void setTreinamento(DadosAlteracaoTreinamento dto){
         this.nome = dto.nome();
         this.formato = dto.formato();
-        this.apostilas = dto.apostilas();
-        this.aulas = dto.aulas();
         this.capa = dto.capa();
         this.nomeProfessor = dto.nomeProfessor();
         this.cpfProfessor = dto.cpfProfessor();

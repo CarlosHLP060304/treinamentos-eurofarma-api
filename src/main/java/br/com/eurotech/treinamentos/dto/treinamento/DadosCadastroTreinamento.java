@@ -3,6 +3,8 @@ package br.com.eurotech.treinamentos.dto.treinamento;
 import java.time.LocalDate;
 import java.util.Set;
 
+import br.com.eurotech.treinamentos.dto.apostila.DadosCadastroApostila;
+import br.com.eurotech.treinamentos.dto.aula.DadosCadastroAula;
 import br.com.eurotech.treinamentos.model.Apostila;
 import br.com.eurotech.treinamentos.model.Aula;
 import br.com.eurotech.treinamentos.model.Formato;
@@ -34,11 +36,7 @@ public record DadosCadastroTreinamento(
      String nomeProfessor,
 
      @NotBlank(message = "Campo de cpf do professor não pode estar vazio")
-     String cpfProfessor,
-      
-     Set<Aula> aulas,
-
-     Set<Apostila> apostilas
+     String cpfProfessor
 ){
 
     
