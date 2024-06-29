@@ -23,6 +23,7 @@ import br.com.eurotech.treinamentos.dto.treinamento.DadosDetalhamentoTreinamento
 import br.com.eurotech.treinamentos.dto.treinamento.DadosListagemTreinamento;
 import br.com.eurotech.treinamentos.model.Treinamento;
 import br.com.eurotech.treinamentos.repository.TreinamentoRepository;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
