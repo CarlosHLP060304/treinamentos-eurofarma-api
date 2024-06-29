@@ -61,7 +61,9 @@ public class UsuarioController{
     @Transactional
     public ResponseEntity alterarUsuario(@PathVariable("id") Long id,@RequestBody @Valid DadosAlteracaoUsuario dados){
         Usuario usuario = repository.getReferenceById(id);
+        String encryptedPassword = new BCryptPasswordEncoder().encode(dados.senha());
         usuario.setUsuario(dados);
+        usuario.setSenha(encryptedPassword);
         return ResponseEntity.noContent().build();
     }
 
