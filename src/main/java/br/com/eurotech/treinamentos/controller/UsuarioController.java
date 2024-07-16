@@ -1,10 +1,13 @@
 package br.com.eurotech.treinamentos.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.eurotech.treinamentos.dto.apostila.DadosDetalhamentoApostila;
+import br.com.eurotech.treinamentos.dto.aula.DadosDetalhamentoAula;
 import br.com.eurotech.treinamentos.dto.treinamento.DadosListagemTreinamento;
 import br.com.eurotech.treinamentos.dto.usuario.DadosAlteracaoUsuario;
 import br.com.eurotech.treinamentos.dto.usuario.DadosCadastroUsuario;
@@ -39,6 +44,13 @@ public class UsuarioController{
         return ResponseEntity.ok(page);
     }
     
+    
+    // @GetMapping("cpf/{id_funcionario}")
+    // public ResponseEntity<List<DadosDetalhamentoUsuario>> findAllByCPF(@PathVariable("id_funcionario") String id_funcionario){
+    //     List<Usuario> funcionarios = repository.findAllByCpf(id_funcionario);
+    //     return ResponseEntity.ok(funcionarios.stream().map(DadosDetalhamentoUsuario::new).toList());
+    // }
+
     @GetMapping("/{id}")
     public ResponseEntity exibirUsuario(@PathVariable("id") Long id){
         Usuario usuario = repository.getReferenceById(id);
