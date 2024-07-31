@@ -7,11 +7,10 @@ public record DadosDetalhamentoUsuario(
     Long id,
     String cpf,
     String nome,
-    String senha,
     Boolean ativo,
     TipoUsuario tipo
 ) {
     public DadosDetalhamentoUsuario(Usuario usuario){
-        this(usuario.getId(),usuario.getCpf(), usuario.getNome(), usuario.getSenha(), usuario.getAtivo(), usuario.getTipo());
+        this(usuario.getId(),usuario.getCpf(), usuario.getNome(), usuario.getAtivo(), usuario.getTipo());
     }
 }

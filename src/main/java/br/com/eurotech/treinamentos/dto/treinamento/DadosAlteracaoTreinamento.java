@@ -1,6 +1,7 @@
 package br.com.eurotech.treinamentos.dto.treinamento;
 
 import java.time.LocalDate;
+import java.time.*;
 import java.util.Set;
 
 import br.com.eurotech.treinamentos.model.Apostila;
@@ -20,18 +21,18 @@ public record DadosAlteracaoTreinamento(
      Formato formato,
     
      @NotNull(message = "Campo de data de início não pode estar vazio")
-     LocalDate dataInicio,
+     LocalDateTime dataInicio,
     
      @NotNull(message = "Campo de data de fim não pode estar vazio")
-     LocalDate dataFim,
+     LocalDateTime dataFim,
 
-     @NotBlank(message = "Campo de capa não pode estar vazio")
-     String capa,
+     // @NotBlank(message = "Campo de capa não pode estar vazio")
+     // String capa,
     
      @NotBlank(message = "Campo de nome do professor não pode estar vazio")
      String nomeProfessor,
 
-     @NotBlank(message = "Campo de cpf do professor não pode estar vazio")
+     //@NotBlank(message = "Campo de cpf do professor não pode estar vazio")
      String cpfProfessor
       
 ){

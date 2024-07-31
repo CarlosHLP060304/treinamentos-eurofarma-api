@@ -47,6 +47,10 @@ public class Usuario implements UserDetails{
 
     @OneToMany(mappedBy = "aluno")
     private List<AlunoAula> alunoAula;
+
+    public Usuario(Long id){
+        this.id = id;
+    }
     
     public Usuario(DadosCadastroUsuario dados) {
         this.nome = dados.nome();

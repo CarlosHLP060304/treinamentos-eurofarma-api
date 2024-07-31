@@ -1,6 +1,6 @@
 package br.com.eurotech.treinamentos.model;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import br.com.eurotech.treinamentos.dto.treinamento.DadosAlteracaoTreinamento;
@@ -13,7 +13,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,13 +37,11 @@ public class Treinamento {
     @Enumerated(EnumType.STRING)
     private Formato formato;
     
-    private Boolean ativo;
+    private Boolean ativo = true;
 
-    private LocalDate dataInicio;
+    private LocalDateTime dataInicio;
 
-    private LocalDate dataFim;
-
-    private String capa;
+    private LocalDateTime dataFim;
 
     private String nomeProfessor;
 
@@ -60,10 +57,8 @@ public class Treinamento {
     public Treinamento(DadosCadastroTreinamento dto) {
         this.nome = dto.nome();
         this.formato = dto.formato();
-        this.ativo = dto.ativo();
-        this.capa = dto.capa();
         this.nomeProfessor = dto.nomeProfessor();
-        this.cpfProfessor = dto.cpfProfessor();
+        //this.cpfProfessor = dto.cpfProfessor();
         this.dataInicio = dto.dataInicio();
         this.dataFim = dto.dataFim();
         this.descricao = dto.descricao();
@@ -78,7 +73,7 @@ public class Treinamento {
     public void setTreinamento(DadosAlteracaoTreinamento dto){
         this.nome = dto.nome();
         this.formato = dto.formato();
-        this.capa = dto.capa();
+        //this.capa = dto.capa();
         this.nomeProfessor = dto.nomeProfessor();
         this.cpfProfessor = dto.cpfProfessor();
         this.dataInicio = dto.dataInicio();

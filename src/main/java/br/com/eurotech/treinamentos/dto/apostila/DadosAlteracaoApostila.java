@@ -6,7 +6,6 @@ import jakarta.validation.constraints.NotNull;
 
 public record DadosAlteracaoApostila(
     
-    @NotBlank(message = "O campo de link não pode estar vazio")
     String link
 
 

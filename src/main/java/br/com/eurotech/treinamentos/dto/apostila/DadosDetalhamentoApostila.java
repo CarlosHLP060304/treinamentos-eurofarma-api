@@ -4,13 +4,14 @@ import br.com.eurotech.treinamentos.model.Apostila;
 import br.com.eurotech.treinamentos.model.Treinamento;
 
 public record DadosDetalhamentoApostila(
+    Long id,
     
-    String link,
+    String link
 
-    Treinamento treinamento
+    //Treinamento treinamento
 
 ) {
     public DadosDetalhamentoApostila(Apostila apostila){
-        this(apostila.getLink(), apostila.getTreinamento());
+        this(apostila.getId() ,apostila.getLink());
     }
 }

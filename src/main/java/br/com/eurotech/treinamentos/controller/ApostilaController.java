@@ -51,7 +51,7 @@ public class ApostilaController {
 
     @GetMapping("/treinamento/{id}")
     public ResponseEntity findByTreinamento(@PathVariable("id") Long id_treinamento){
-        List<Apostila> apostilas = repository.findApostilasByTreinamentoId(id_treinamento);
+        List<Apostila> apostilas = repository.findByTreinamentoId(id_treinamento);
         return ResponseEntity.ok(apostilas.stream().map(DadosDetalhamentoApostila::new).toList());
     }
     

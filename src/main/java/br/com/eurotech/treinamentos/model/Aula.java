@@ -37,9 +37,11 @@ public class Aula {
 
     private String sala;
 
-    private LocalDateTime dataInicio;
+    private Double duracao;
 
-    private LocalDateTime dataFim;
+    private String nome;
+
+    private String link;
 
     @ManyToOne
     @JoinColumn(name = "id_treinamento",nullable = false)
@@ -52,21 +54,23 @@ public class Aula {
     private List<AlunoAula> alunoAula;
     
 
-    public Long getTempoAula(){
-        return Duration.between(dataInicio, dataFim).toMinutes();
-    }
+    // public Long getTempoAula(){
+    //     return Duration.between(dataInicio, dataFim).toMinutes();
+    // }
 
     public void setAula(DadosAlteracaoAula dados) {
         this.sala = dados.sala();
-        this.dataInicio = dados.dataInicio();
-        this.dataFim = dados.dataFim();
+        this.nome = dados.nome();
+        this.link = dados.link();
+        this.duracao = dados.duracao();
     }
 
     public Aula(DadosCadastroAula dados) {
         this.sala = dados.sala();
-        this.dataInicio = dados.dataInicio();
-        this.dataFim = dados.dataFim();
+        this.nome = dados.nome();
+        this.link = dados.link();
         this.treinamento = dados.treinamento();
+        this.duracao = dados.duracao();
     }
     
 }
