@@ -1,6 +1,7 @@
 package br.com.eurotech.treinamentos.dto.treinamento;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import br.com.eurotech.treinamentos.dto.apostila.DadosCadastroApostila;
@@ -13,6 +14,7 @@ import jakarta.validation.constraints.NotNull;
 
 public record DadosCadastroTreinamento(
 
+
      @NotBlank(message = "Campo de nome não pode estar vazio")
      String nome,
 
@@ -20,23 +22,21 @@ public record DadosCadastroTreinamento(
      String descricao,
 
      Formato formato,
-
-     Boolean ativo,
     
-     @NotNull(message = "Campo de data de início não pode estar vazio")
-     LocalDate dataInicio,
+    // @NotNull(message = "Campo de data de início não pode estar vazio")
+     LocalDateTime dataInicio,
     
-     @NotNull(message = "Campo de data de fim não pode estar vazio")
-     LocalDate dataFim,
+     //@NotNull(message = "Campo de data de fim não pode estar vazio")
+     LocalDateTime dataFim,
 
-     @NotBlank(message = "Campo de capa não pode estar vazio")
-     String capa,
+     // @NotBlank(message = "Campo de capa não pode estar vazio")
+     // String capa,
     
      @NotBlank(message = "Campo de nome do professor não pode estar vazio")
-     String nomeProfessor,
+     String nomeProfessor
 
-     @NotBlank(message = "Campo de cpf do professor não pode estar vazio")
-     String cpfProfessor
+     //@NotBlank(message = "Campo de cpf do professor não pode estar vazio")
+     //String cpfProfessor
 ){
 
     

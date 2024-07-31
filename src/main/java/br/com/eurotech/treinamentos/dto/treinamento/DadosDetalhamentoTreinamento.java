@@ -1,10 +1,6 @@
 package br.com.eurotech.treinamentos.dto.treinamento;
 
-import java.time.LocalDate;
-import java.util.Set;
-
-import br.com.eurotech.treinamentos.model.Apostila;
-import br.com.eurotech.treinamentos.model.Aula;
+import java.time.LocalDateTime;
 import br.com.eurotech.treinamentos.model.Formato;
 import br.com.eurotech.treinamentos.model.Treinamento;
 
@@ -19,11 +15,9 @@ public record DadosDetalhamentoTreinamento(
 
      Boolean ativo,
     
-     LocalDate dataInicio,
+     LocalDateTime dataInicio,
        
-     LocalDate dataFim,
-
-     String capa,
+     LocalDateTime dataFim,
 
      String nomeProfessor,
 
@@ -31,7 +25,7 @@ public record DadosDetalhamentoTreinamento(
 ){
 
      public DadosDetalhamentoTreinamento(Treinamento treinamento) {
-          this(treinamento.getId(), treinamento.getNome(), treinamento.getDescricao(), treinamento.getFormato(), treinamento.getAtivo(), treinamento.getDataInicio(), treinamento.getDataFim(), treinamento.getCapa(), treinamento.getNomeProfessor(), treinamento.getCpfProfessor());
+          this(treinamento.getId(), treinamento.getNome(), treinamento.getDescricao(), treinamento.getFormato(), treinamento.getAtivo(), treinamento.getDataInicio(), treinamento.getDataFim(),treinamento.getNomeProfessor(), treinamento.getCpfProfessor());
      }
 
     

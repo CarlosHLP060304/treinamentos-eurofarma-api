@@ -1,7 +1,10 @@
 package br.com.eurotech.treinamentos.model;
 
+import br.com.eurotech.treinamentos.dto.aula.DadosIdAula;
+import br.com.eurotech.treinamentos.dto.usuario.DadosIdUsuario;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -20,9 +23,8 @@ import lombok.Setter;
 public class AlunoAula {
     
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-
 
     @ManyToOne
     @JoinColumn(name = "id_aula")
@@ -32,5 +34,11 @@ public class AlunoAula {
     @JoinColumn(name = "id_aluno")
     private Usuario aluno;
     
-    private Boolean aula_concluida;
+    private Boolean aula_concluida = false;
+
+    public AlunoAula(Usuario aluno,Aula aula){
+        this.aluno = aluno;
+        this.aula = aula;
+    }
+
 }

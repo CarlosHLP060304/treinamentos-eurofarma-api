@@ -3,22 +3,20 @@ package br.com.eurotech.treinamentos.dto.aula;
 import java.time.LocalDateTime;
 
 import br.com.eurotech.treinamentos.model.Aula;
+import br.com.eurotech.treinamentos.model.Treinamento;
 
 
 
 public record DadosDetalhamentoAula(
     Long id,
-     
     String sala,
-
-    LocalDateTime dataInicio,
-
-    LocalDateTime dataFim,
-
-    Boolean ativo
+    String nome,
+    String link,
+    Double duracao
+    // Treinamento treinamento
 
 ){
     public DadosDetalhamentoAula(Aula aula){
-        this(aula.getId(),aula.getSala(), aula.getDataInicio(),aula.getDataFim(), aula.getAtivo());
+        this(aula.getId(),aula.getSala(),aula.getLink(),aula.getNome(),aula.getDuracao());
     }
 }
