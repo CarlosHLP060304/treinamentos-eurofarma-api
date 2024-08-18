@@ -1,3 +1,0 @@
-ALTER TABLE tb_treinamento
-MODIFY COLUMN data_inicio DATETIME,
-MODIFY COLUMN data_fim DATETIME;
