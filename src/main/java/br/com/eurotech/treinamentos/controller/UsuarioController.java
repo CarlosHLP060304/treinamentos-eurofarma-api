@@ -28,6 +28,7 @@ import br.com.eurotech.treinamentos.dto.usuario.DadosCadastroUsuario;
 import br.com.eurotech.treinamentos.dto.usuario.DadosDetalhamentoUsuario;
 import br.com.eurotech.treinamentos.model.Apostila;
 import br.com.eurotech.treinamentos.model.Aula;
+import br.com.eurotech.treinamentos.model.Setor;
 import br.com.eurotech.treinamentos.model.Usuario;
 import br.com.eurotech.treinamentos.repository.AulaRepository;
 import br.com.eurotech.treinamentos.repository.UsuarioRepository;
@@ -50,6 +51,21 @@ public class UsuarioController{
         return ResponseEntity.ok(page);
     }
     
+    
+
+    @GetMapping("/setor")
+    public ResponseEntity<List<DadosDetalhamentoUsuario>> listarUsuariosBySetor(@RequestParam("setor") Setor setor){
+        List<DadosDetalhamentoUsuario> usuarios = repository.findBySetor(setor).stream().map(DadosDetalhamentoUsuario::new).toList();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    @GetMapping("/re")
+    public ResponseEntity<Usuario> listarUsuariosBySetor(@RequestParam("re") String re){
+        Usuario usuario = repository.findByRe(re);
+        return ResponseEntity.ok(usuario);
+    }
+
+
     @GetMapping("/treinamento/{id}")
     public ResponseEntity findByTreinamento(@PathVariable("id") Long id_treinamento){
         List<Usuario> usuarios= repository.findByTreinamento(id_treinamento);

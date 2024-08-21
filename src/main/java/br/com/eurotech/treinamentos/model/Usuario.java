@@ -41,6 +41,11 @@ public class Usuario implements UserDetails{
     private String senha;
     
     private Boolean ativo = true;
+
+    @Enumerated(EnumType.STRING)
+    private Setor setor;
+
+    private String re;
     
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipo;
@@ -56,7 +61,9 @@ public class Usuario implements UserDetails{
         this.nome = dados.nome();
         this.cpf = dados.cpf();
         this.senha = dados.senha();
-        this.tipo = dados.tipo();    
+        this.tipo = dados.tipo(); 
+        this.setor = dados.setor();  
+        this.re = dados.re(); 
     }
 
 

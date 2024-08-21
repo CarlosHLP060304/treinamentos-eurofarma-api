@@ -2,6 +2,7 @@ package br.com.eurotech.treinamentos.dto.usuario;
 
 import org.hibernate.validator.constraints.br.CPF;
 
+import br.com.eurotech.treinamentos.model.Setor;
 import br.com.eurotech.treinamentos.model.TipoUsuario;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -19,7 +20,13 @@ public record DadosCadastroUsuario(
     String senha,
 
     @NotNull(message = "O campo de especialidade não pode estar vazio")
-    TipoUsuario tipo
+    TipoUsuario tipo,
+
+    @NotBlank(message = "O campo de re não pode estar vazio")
+    String re,
+
+    @NotNull(message = "O campo de setor não pode estar vazio")
+    Setor setor
 ) {
     
 }

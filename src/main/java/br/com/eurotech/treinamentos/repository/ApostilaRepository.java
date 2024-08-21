@@ -9,5 +9,6 @@ import br.com.eurotech.treinamentos.model.Apostila;
 public interface ApostilaRepository extends JpaRepository<Apostila,Long>{
 
     List<Apostila> findByTreinamentoId(Long treinamentoId);
+
     
 }
