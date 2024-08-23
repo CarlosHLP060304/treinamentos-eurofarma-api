@@ -60,7 +60,7 @@ public class UsuarioController{
     }
 
     @GetMapping("/re")
-    public ResponseEntity<Usuario> listarUsuariosBySetor(@RequestParam("re") String re){
+    public ResponseEntity<Usuario> listarUsuariosByRe(@RequestParam("re") String re){
         Usuario usuario = repository.findByRe(re);
         return ResponseEntity.ok(usuario);
     }
