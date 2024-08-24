@@ -1,6 +1,8 @@
 package br.com.eurotech.treinamentos.repository;
 
 import java.util.List;
+
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,6 +27,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long>{
     List<Usuario> findBySetor(Setor setor);
 
     Usuario findByRe(String re);
+
+    @Query(value = "select * from tb_usuario where nome like(:query) or cpf  like(:query) or re like(:query) or setor like(:query)",nativeQuery = true)
+    List<Usuario> findByQuery(@Param("query") String query);
 
 }
     

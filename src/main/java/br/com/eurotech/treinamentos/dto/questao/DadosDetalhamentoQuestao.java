@@ -1,8 +1,8 @@
 package br.com.eurotech.treinamentos.dto.questao;
 
 import java.util.List;
-
 import com.google.cloud.firestore.QueryDocumentSnapshot;
+import com.google.firebase.database.GenericTypeIndicator;
 
 public record DadosDetalhamentoQuestao(
     String resposta,
@@ -10,6 +10,13 @@ public record DadosDetalhamentoQuestao(
     String pergunta
 ) {
     public DadosDetalhamentoQuestao(QueryDocumentSnapshot doc){
-        this(doc.getString("resposta"), doc.get("alternativas",List.class), doc.getString("pergunta"));
+        this(
+            doc.getString("resposta"),
+            (List<String>)doc.get("alternativas"),
+            doc.getString("pergunta")
+        );
     } 
+
+    
 }
+

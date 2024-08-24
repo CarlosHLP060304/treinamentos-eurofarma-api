@@ -51,7 +51,12 @@ public class UsuarioController{
         return ResponseEntity.ok(page);
     }
     
-    
+    @GetMapping("/research")
+    public ResponseEntity<List<DadosDetalhamentoUsuario>> listarByQuery(@RequestParam("query") String query){
+        List<DadosDetalhamentoUsuario> usuarios = repository.findByQuery(query).stream().map(DadosDetalhamentoUsuario::new).toList();
+        return ResponseEntity.ok(usuarios);
+    }
+
 
     @GetMapping("/setor")
     public ResponseEntity<List<DadosDetalhamentoUsuario>> listarUsuariosBySetor(@RequestParam("setor") Setor setor){
