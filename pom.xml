@@ -53,6 +53,20 @@
 			<artifactId>google-cloud-firestore</artifactId>
 			<version>3.8.0</version> <!-- Verifique se esta é a versão mais recente -->
 		</dependency>
+		   <!-- Dependência do Apache POI para manipular arquivos Excel -->
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi-ooxml</artifactId>
+        <version>5.2.0</version> <!-- Verifique se há uma versão mais recente -->
+    </dependency>
+
+    <!-- Dependência do Apache POI para trabalhar com arquivos mais antigos (xls) -->
+    <dependency>
+        <groupId>org.apache.poi</groupId>
+        <artifactId>poi</artifactId>
+        <version>5.2.0</version> <!-- Verifique se há uma versão mais recente -->
+    </dependency>
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>

@@ -57,6 +57,14 @@ public class UsuarioController{
         return ResponseEntity.ok(usuarios);
     }
 
+    @GetMapping("/research/cpf_re_nome")
+    public ResponseEntity<List<DadosDetalhamentoUsuario>> listarByQueryNomeOrCpfOrRe(@RequestParam("query") String query){
+        List<DadosDetalhamentoUsuario> usuarios = repository.findByQuery(query).stream().map(DadosDetalhamentoUsuario::new).toList();
+        return ResponseEntity.ok(usuarios);
+    }
+
+
+
 
     @GetMapping("/setor")
     public ResponseEntity<List<DadosDetalhamentoUsuario>> listarUsuariosBySetor(@RequestParam("setor") Setor setor){
@@ -76,6 +84,9 @@ public class UsuarioController{
         List<Usuario> usuarios= repository.findByTreinamento(id_treinamento);
         return ResponseEntity.ok(usuarios.stream().map(DadosDetalhamentoUsuario::new).toList());
     }
+
+
+
 
 
     // @GetMapping("cpf/{id_funcionario}")
