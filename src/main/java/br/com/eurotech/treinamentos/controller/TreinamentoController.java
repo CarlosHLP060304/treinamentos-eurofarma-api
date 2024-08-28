@@ -50,6 +50,7 @@ public class TreinamentoController {
         return ResponseEntity.ok(treinamentos);
     }
 
+
     @GetMapping("/{id}")
     public ResponseEntity<DadosDetalhamentoTreinamento> findById(@PathVariable("id") Long id){
         Treinamento treinamento = repository.getReferenceById(id);
