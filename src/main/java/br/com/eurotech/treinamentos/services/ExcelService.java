@@ -93,7 +93,7 @@ public class ExcelService {
             for(DadosHistoricoTreinamento dadosHistoricoTreinamento : listaDadosHistoricoTreinamento){
                 Row row = sheet.createRow(++numero_row_inicial);
                 row.createCell(2).setCellValue(dadosHistoricoTreinamento.nome());
-                row.createCell(3).setCellValue(dadosHistoricoTreinamento.aula_concluida());
+                row.createCell(3).setCellValue(dadosHistoricoTreinamento.aula_concluida() == false ? "AUSENTE" : "PRESENTE");
                 row.createCell(4).setCellValue(dadosHistoricoTreinamento.data_inicio()+"");
             }    
             
