@@ -1,5 +1,6 @@
 package br.com.eurotech.treinamentos.controller;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.eurotech.treinamentos.dto.aula.DadosDetalhamentoAula;
 import br.com.eurotech.treinamentos.dto.treinamento.DadosAlteracaoTreinamento;
 import br.com.eurotech.treinamentos.dto.treinamento.DadosCadastroTreinamento;
 import br.com.eurotech.treinamentos.dto.treinamento.DadosDetalhamentoTreinamento;
+import br.com.eurotech.treinamentos.dto.treinamento.DadosHistoricoTreinamento;
 import br.com.eurotech.treinamentos.dto.treinamento.DadosListagemTreinamento;
 import br.com.eurotech.treinamentos.model.Treinamento;
 import br.com.eurotech.treinamentos.repository.TreinamentoRepository;
@@ -40,6 +43,13 @@ public class TreinamentoController {
         var page = repository.findAll(paginacao).map(DadosListagemTreinamento::new);
         return ResponseEntity.ok(page);
     }  
+
+    @GetMapping("findByAluno/{id_aluno}")
+    public ResponseEntity<List<DadosHistoricoTreinamento>> findTreinamentosByAluno(@PathVariable("id_aluno") Long id_aluno){
+        List<DadosHistoricoTreinamento> treinamentos = repository.findTreinamentosByAluno(id_aluno);
+        return ResponseEntity.ok(treinamentos);
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<DadosDetalhamentoTreinamento> findById(@PathVariable("id") Long id){

@@ -22,8 +22,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.eurotech.treinamentos.dto.apostila.DadosDetalhamentoApostila;
 import br.com.eurotech.treinamentos.dto.aula.DadosDetalhamentoAula;
+import br.com.eurotech.treinamentos.dto.treinamento.DadosHistoricoTreinamento;
 import br.com.eurotech.treinamentos.dto.treinamento.DadosListagemTreinamento;
 import br.com.eurotech.treinamentos.dto.usuario.DadosAlteracaoUsuario;
+import br.com.eurotech.treinamentos.dto.usuario.DadosAlunoPresenca;
 import br.com.eurotech.treinamentos.dto.usuario.DadosCadastroUsuario;
 import br.com.eurotech.treinamentos.dto.usuario.DadosDetalhamentoUsuario;
 import br.com.eurotech.treinamentos.model.Apostila;
@@ -50,8 +52,25 @@ public class UsuarioController{
         var page = repository.findAll(paginacao).map(DadosDetalhamentoUsuario::new);
         return ResponseEntity.ok(page);
     }
+
+    @GetMapping("/findAlunosPresencaByTreinamento/{id_treinamento}")
+    public ResponseEntity<List<DadosAlunoPresenca>> findDadosAlunoPresencasByTreinamento(@PathVariable("id_treinamento") Long id_treinamento){
+        List<DadosAlunoPresenca> treinamentos = repository.findDadosAlunoPresencasByTreinamento(id_treinamento);
+        return ResponseEntity.ok(treinamentos);
+    }
     
-    
+    @GetMapping("/research")
+    public ResponseEntity<List<DadosDetalhamentoUsuario>> listarByQuery(@RequestParam("query") String query){
+        List<DadosDetalhamentoUsuario> usuarios = repository.findByQuery(query).stream().map(DadosDetalhamentoUsuario::new).toList();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    @GetMapping("/research/cpf_re_nome")
+    public ResponseEntity<List<DadosDetalhamentoUsuario>> listarByQueryNomeOrCpfOrRe(@RequestParam("query") String query){
+        List<DadosDetalhamentoUsuario> usuarios = repository.findByQuery(query).stream().map(DadosDetalhamentoUsuario::new).toList();
+        return ResponseEntity.ok(usuarios);
+    }
+
 
     @GetMapping("/setor")
     public ResponseEntity<List<DadosDetalhamentoUsuario>> listarUsuariosBySetor(@RequestParam("setor") Setor setor){
@@ -60,7 +79,7 @@ public class UsuarioController{
     }
 
     @GetMapping("/re")
-    public ResponseEntity<Usuario> listarUsuariosBySetor(@RequestParam("re") String re){
+    public ResponseEntity<Usuario> listarUsuariosByRe(@RequestParam("re") String re){
         Usuario usuario = repository.findByRe(re);
         return ResponseEntity.ok(usuario);
     }
@@ -71,6 +90,9 @@ public class UsuarioController{
         List<Usuario> usuarios= repository.findByTreinamento(id_treinamento);
         return ResponseEntity.ok(usuarios.stream().map(DadosDetalhamentoUsuario::new).toList());
     }
+
+
+
 
 
     // @GetMapping("cpf/{id_funcionario}")

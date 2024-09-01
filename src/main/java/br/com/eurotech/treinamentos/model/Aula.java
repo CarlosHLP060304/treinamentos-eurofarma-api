@@ -1,12 +1,6 @@
 package br.com.eurotech.treinamentos.model;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.List;
-
-import javax.print.DocFlavor.STRING;
 
 import br.com.eurotech.treinamentos.dto.aula.DadosAlteracaoAula;
 import br.com.eurotech.treinamentos.dto.aula.DadosCadastroAula;
@@ -15,8 +9,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
