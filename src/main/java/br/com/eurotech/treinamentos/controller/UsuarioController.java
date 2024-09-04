@@ -55,8 +55,8 @@ public class UsuarioController{
 
     @GetMapping("/findAlunosPresencaByTreinamento/{id_treinamento}")
     public ResponseEntity<List<DadosAlunoPresenca>> findDadosAlunoPresencasByTreinamento(@PathVariable("id_treinamento") Long id_treinamento){
-        List<DadosAlunoPresenca> treinamentos = repository.findDadosAlunoPresencasByTreinamento(id_treinamento);
-        return ResponseEntity.ok(treinamentos);
+        List<DadosAlunoPresenca> alunosPresencas = repository.findDadosAlunoPresencasByTreinamento(id_treinamento);
+        return ResponseEntity.ok(alunosPresencas);
     }
     
     @GetMapping("/research")
@@ -90,10 +90,6 @@ public class UsuarioController{
         List<Usuario> usuarios= repository.findByTreinamento(id_treinamento);
         return ResponseEntity.ok(usuarios.stream().map(DadosDetalhamentoUsuario::new).toList());
     }
-
-
-
-
 
     // @GetMapping("cpf/{id_funcionario}")
     // public ResponseEntity<List<DadosDetalhamentoUsuario>> findAllByCPF(@PathVariable("id_funcionario") String id_funcionario){

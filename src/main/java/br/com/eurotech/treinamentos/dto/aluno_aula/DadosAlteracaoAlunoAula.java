@@ -6,9 +6,9 @@ import br.com.eurotech.treinamentos.dto.aula.DadosIdAula;
 import br.com.eurotech.treinamentos.dto.usuario.DadosIdUsuario;
 
 public record DadosAlteracaoAlunoAula(
-    List <DadosIdAula> aulas,
-    List <DadosIdUsuario> alunos,
-    List <DadosIdUsuario> alunos_deletados
+    List <Long> alunos_deletados,
+    List <Long> alunos_adicionados,
+    Long id_treinamento
 ) {
     
 }

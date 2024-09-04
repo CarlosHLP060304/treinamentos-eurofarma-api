@@ -46,7 +46,7 @@ public class AulaController {
     private AlunoAulaRepository alunoAulaRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;;
+    private UsuarioRepository usuarioRepository;
 
     @GetMapping("/treinamento/{id}")
     public ResponseEntity<List<DadosDetalhamentoAula>> listarAulas(@PathVariable("id") Long id_treinamento){
@@ -83,20 +83,27 @@ public class AulaController {
     public ResponseEntity alterarAlunoAula(@RequestBody @Valid DadosAlteracaoAlunoAula dados,UriComponentsBuilder uriBuilder){
         List<Usuario> usuarios_banco = alunoAulaRepository.findByIdAluno();
         
-        for (DadosIdUsuario dadosIdUsuario : dados.alunos_deletados()) {
-            alunoAulaRepository.deleteByUsuarioId(dadosIdUsuario.id());
+        for (Long dadosIdUsuario : dados.alunos_deletados()) {
+            alunoAulaRepository.deleteByUsuarioId(dadosIdUsuario);
         }
 
-        for(DadosIdUsuario dadosIdUsuario : dados.alunos()){
-            for (Usuario usuario_banco : usuarios_banco) {
-                if(!usuario_banco.getId().equals(dadosIdUsuario.id())){
-                    for(DadosIdAula dadosIdAula : dados.aulas()){
-                        alunoAulaRepository.save(new AlunoAula(usuarioRepository.getReferenceById(dadosIdUsuario.id()),repository.getReferenceById(dadosIdAula.id())));
-                    }
-                }
-            }
+        // for(DadosIdUsuario dadosIdUsuario : dados.alunos()){
+        //     for (Usuario usuario_banco : usuarios_banco) {
+        //         if(!usuario_banco.getId().equals(dadosIdUsuario.id())){
+        //             for(DadosIdAula dadosIdAula : dados.aulas()){
+        //                 alunoAulaRepository.save(new AlunoAula(usuarioRepository.getReferenceById(dadosIdUsuario.id()),repository.getReferenceById(dadosIdAula.id())));
+        //             }
+        //         }
+        //     }
+            
+        // }
+
+        for(Long dadosIdUsuario : dados.alunos_adicionados()){
+          
+            alunoAulaRepository.save(new AlunoAula(usuarioRepository.getReferenceById(dadosIdUsuario),repository.getReferenceById(dados.id_treinamento())));
             
         }
+
          
         return ResponseEntity.noContent().build();
     }
