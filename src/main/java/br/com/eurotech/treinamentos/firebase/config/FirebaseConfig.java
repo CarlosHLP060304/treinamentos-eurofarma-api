@@ -17,13 +17,9 @@ public class FirebaseConfig {
     @PostConstruct
     public void configFirebaseConnection(){
         try {
-        //     FileInputStream serviceAccount = new FileInputStream("src/main/resources/config/eurofinal-firebase-adminsdk-nh5g4-dfd9b15d20.json");
-        //     FirebaseOptions options = new FirebaseOptions.Builder()
-        //         .setCredentials(GoogleCredentials.fromStream(serviceAccount))
-        //         .build();
-        // FirebaseApp.initializeApp(options);
+   
             FileInputStream serviceAccount =
-            new FileInputStream("src/main/resources/config/teste-firebase-7a314-firebase-adminsdk-x624a-b28ae4695d.json");
+            new FileInputStream("src/main/resources/config/eurofinal-firebase-adminsdk-nh5g4-45eb9e22c2.json");
 
             FirebaseOptions options = new FirebaseOptions.Builder()
             .setCredentials(GoogleCredentials.fromStream(serviceAccount))
