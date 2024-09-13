@@ -72,9 +72,15 @@ public class UsuarioController{
     }
 
 
-    @GetMapping("/setor")
-    public ResponseEntity<List<DadosDetalhamentoUsuario>> listarUsuariosBySetor(@RequestParam("setor") Setor setor){
+    @GetMapping("/setor/{setor}")
+    public ResponseEntity<List<DadosDetalhamentoUsuario>> listarUsuariosBySetor(@PathVariable("setor") Setor setor){
         List<DadosDetalhamentoUsuario> usuarios = repository.findBySetor(setor).stream().map(DadosDetalhamentoUsuario::new).toList();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    @GetMapping("/setor")
+    public ResponseEntity<Setor[]> listarSetores(){
+        Setor[] usuarios = Setor.values();
         return ResponseEntity.ok(usuarios);
     }
 
