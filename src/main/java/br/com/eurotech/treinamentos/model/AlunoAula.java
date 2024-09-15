@@ -36,6 +36,8 @@ public class AlunoAula {
     
     private Boolean aula_concluida = false;
 
+    private String assinatura;
+
     public AlunoAula(Usuario aluno,Aula aula){
         this.aluno = aluno;
         this.aula = aula;

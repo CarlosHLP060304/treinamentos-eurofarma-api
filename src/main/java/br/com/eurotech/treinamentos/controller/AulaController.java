@@ -1,9 +1,11 @@
 package br.com.eurotech.treinamentos.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +14,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.google.cloud.storage.Bucket;
+import com.google.firebase.cloud.StorageClient;
 
 import br.com.eurotech.treinamentos.dto.aluno_aula.DadosAlteracaoAlunoAula;
 import br.com.eurotech.treinamentos.dto.aluno_aula.DadosCadastroAlunoAula;
@@ -78,23 +86,13 @@ public class AulaController {
         return uris;
     }
 
-    @PutMapping("/users/edit")
-    @Transactional
-    public ResponseEntity alterarAlunoAula(@RequestBody @Valid DadosAlteracaoAlunoAula dados,UriComponentsBuilder uriBuilder){
-        List<Usuario> usuarios_banco = alunoAulaRepository.findByIdAluno();
-        
-        for (Long dadosIdUsuario : dados.alunos_deletados()) {
-            alunoAulaRepository.deleteByUsuarioId(dadosIdUsuario);
-        }
-        
-        for(Long dadosIdUsuario : dados.alunos_adicionados()){
-          
-            alunoAulaRepository.save(new AlunoAula(usuarioRepository.getReferenceById(dadosIdUsuario),repository.getReferenceById(dados.id_treinamento())));
-            
-        }
 
-         
-        return ResponseEntity.noContent().build();
+    @PutMapping("/registrarPresenca")
+    public ResponseEntity upload(@RequestPart MultipartFile imageFile,@RequestParam String oi) throws IOException{
+        // InputStream inputStream = imageFile.getInputStream();
+       Bucket bucket = StorageClient.getInstance().bucket();
+       bucket.create(oi, imageFile.getBytes(), "image/jpeg");
+       return ResponseEntity.noContent().build();
     }
       
     @PutMapping("/{id}")
