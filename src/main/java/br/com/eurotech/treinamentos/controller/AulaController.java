@@ -86,18 +86,7 @@ public class AulaController {
         for (Long dadosIdUsuario : dados.alunos_deletados()) {
             alunoAulaRepository.deleteByUsuarioId(dadosIdUsuario);
         }
-
-        // for(DadosIdUsuario dadosIdUsuario : dados.alunos()){
-        //     for (Usuario usuario_banco : usuarios_banco) {
-        //         if(!usuario_banco.getId().equals(dadosIdUsuario.id())){
-        //             for(DadosIdAula dadosIdAula : dados.aulas()){
-        //                 alunoAulaRepository.save(new AlunoAula(usuarioRepository.getReferenceById(dadosIdUsuario.id()),repository.getReferenceById(dadosIdAula.id())));
-        //             }
-        //         }
-        //     }
-            
-        // }
-
+        
         for(Long dadosIdUsuario : dados.alunos_adicionados()){
           
             alunoAulaRepository.save(new AlunoAula(usuarioRepository.getReferenceById(dadosIdUsuario),repository.getReferenceById(dados.id_treinamento())));

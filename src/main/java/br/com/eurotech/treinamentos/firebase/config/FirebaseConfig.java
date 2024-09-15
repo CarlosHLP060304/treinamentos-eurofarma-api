@@ -25,8 +25,10 @@ public class FirebaseConfig {
             .setCredentials(GoogleCredentials.fromStream(serviceAccount))
             .setDatabaseUrl("https://teste-firebase-7a314-default-rtdb.firebaseio.com")
             .build();
-
-            FirebaseApp.initializeApp(options);
+            
+            if(FirebaseApp.getApps().isEmpty()){
+                FirebaseApp.initializeApp(options);
+            }
 
         } catch (FileNotFoundException e) {
             System.out.println("Arquivo não encontrado!");
