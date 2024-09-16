@@ -1,10 +1,15 @@
 package br.com.eurotech.treinamentos.controller;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -21,6 +26,9 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Bucket;
 import com.google.firebase.cloud.StorageClient;
 
@@ -56,6 +64,9 @@ public class AulaController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Value("${image.base.url}")
+    private String imageBaseUrl;
+
     @GetMapping("/treinamento/{id}")
     public ResponseEntity<List<DadosDetalhamentoAula>> listarAulas(@PathVariable("id") Long id_treinamento){
         List<Aula> aulas = repository.findByTreinamentoIdAndAtivoTrue(id_treinamento);
@@ -88,13 +99,44 @@ public class AulaController {
 
 
     @PutMapping("/registrarPresenca")
-    public ResponseEntity upload(@RequestPart MultipartFile imageFile,@RequestParam String oi) throws IOException{
-        // InputStream inputStream = imageFile.getInputStream();
+    @Transactional
+    public ResponseEntity registrarPresenca ( @RequestPart("assinaturaFile") MultipartFile assinaturaFile,
+    @RequestParam("id_aula") Long id_aula,
+    @RequestParam("id_aluno") Long id_aluno){
        Bucket bucket = StorageClient.getInstance().bucket();
-       bucket.create(oi, imageFile.getBytes(), "image/jpeg");
+       AlunoAula alunoAula =  alunoAulaRepository.findAlunoAulaByIdAlunoAndIdAula(id_aluno,id_aula);
+       Usuario usuario  = usuarioRepository.getReferenceById(id_aluno);
+       Aula aula = repository.getReferenceById(id_aula);
+       String name = usuario.getRe() + "aula" +aula.getId();
+       String downloadUrl = "";
+       
+       try {
+           bucket.create(name, assinaturaFile.getBytes(), assinaturaFile.getContentType());
+           downloadUrl = getImageUrl(imageBaseUrl,name);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+        }
+
+       alunoAula.setAssinatura(downloadUrl);
+       alunoAula.setAula_concluida(true);
+
        return ResponseEntity.noContent().build();
     }
       
+    public String getImageUrl(String baseUrl,String name) throws IOException, InterruptedException {
+    HttpClient client = HttpClient.newHttpClient();
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(baseUrl+name))
+            .build();
+    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    String jsonResponse = response.body();
+    JsonNode node = new ObjectMapper().readTree(jsonResponse);
+    String imageToken = node.get("downloadTokens").asText();
+    System.out.println(node);
+    return baseUrl + name + "?alt=media&token=" + imageToken;
+  }
+
+
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity alterarAula(@PathVariable("id") Long id,@RequestBody @Valid DadosAlteracaoAula dados){
