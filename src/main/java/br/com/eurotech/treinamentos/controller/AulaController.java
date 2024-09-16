@@ -1,9 +1,16 @@
 package br.com.eurotech.treinamentos.controller;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,9 +19,18 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.cloud.storage.Blob;
+import com.google.cloud.storage.Bucket;
+import com.google.firebase.cloud.StorageClient;
 
 import br.com.eurotech.treinamentos.dto.aluno_aula.DadosAlteracaoAlunoAula;
 import br.com.eurotech.treinamentos.dto.aluno_aula.DadosCadastroAlunoAula;
@@ -48,6 +64,9 @@ public class AulaController {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Value("${image.base.url}")
+    private String imageBaseUrl;
+
     @GetMapping("/treinamento/{id}")
     public ResponseEntity<List<DadosDetalhamentoAula>> listarAulas(@PathVariable("id") Long id_treinamento){
         List<Aula> aulas = repository.findByTreinamentoIdAndAtivoTrue(id_treinamento);
@@ -78,36 +97,46 @@ public class AulaController {
         return uris;
     }
 
-    @PutMapping("/users/edit")
+
+    @PutMapping("/registrarPresenca")
     @Transactional
-    public ResponseEntity alterarAlunoAula(@RequestBody @Valid DadosAlteracaoAlunoAula dados,UriComponentsBuilder uriBuilder){
-        List<Usuario> usuarios_banco = alunoAulaRepository.findByIdAluno();
-        
-        for (Long dadosIdUsuario : dados.alunos_deletados()) {
-            alunoAulaRepository.deleteByUsuarioId(dadosIdUsuario);
+    public ResponseEntity registrarPresenca ( @RequestPart("assinaturaFile") MultipartFile assinaturaFile,
+    @RequestParam("id_aula") Long id_aula,
+    @RequestParam("id_aluno") Long id_aluno){
+       Bucket bucket = StorageClient.getInstance().bucket();
+       AlunoAula alunoAula =  alunoAulaRepository.findAlunoAulaByIdAlunoAndIdAula(id_aluno,id_aula);
+       Usuario usuario  = usuarioRepository.getReferenceById(id_aluno);
+       Aula aula = repository.getReferenceById(id_aula);
+       String name = usuario.getRe() + "aula" +aula.getId();
+       String downloadUrl = "";
+       
+       try {
+           bucket.create(name, assinaturaFile.getBytes(), assinaturaFile.getContentType());
+           downloadUrl = getImageUrl(imageBaseUrl,name);
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
         }
 
-        // for(DadosIdUsuario dadosIdUsuario : dados.alunos()){
-        //     for (Usuario usuario_banco : usuarios_banco) {
-        //         if(!usuario_banco.getId().equals(dadosIdUsuario.id())){
-        //             for(DadosIdAula dadosIdAula : dados.aulas()){
-        //                 alunoAulaRepository.save(new AlunoAula(usuarioRepository.getReferenceById(dadosIdUsuario.id()),repository.getReferenceById(dadosIdAula.id())));
-        //             }
-        //         }
-        //     }
-            
-        // }
+       alunoAula.setAssinatura(downloadUrl);
+       alunoAula.setAula_concluida(true);
 
-        for(Long dadosIdUsuario : dados.alunos_adicionados()){
-          
-            alunoAulaRepository.save(new AlunoAula(usuarioRepository.getReferenceById(dadosIdUsuario),repository.getReferenceById(dados.id_treinamento())));
-            
-        }
-
-         
-        return ResponseEntity.noContent().build();
+       return ResponseEntity.noContent().build();
     }
       
+    public String getImageUrl(String baseUrl,String name) throws IOException, InterruptedException {
+    HttpClient client = HttpClient.newHttpClient();
+    HttpRequest request = HttpRequest.newBuilder()
+            .uri(URI.create(baseUrl+name))
+            .build();
+    HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+    String jsonResponse = response.body();
+    JsonNode node = new ObjectMapper().readTree(jsonResponse);
+    String imageToken = node.get("downloadTokens").asText();
+    System.out.println(node);
+    return baseUrl + name + "?alt=media&token=" + imageToken;
+  }
+
+
     @PutMapping("/{id}")
     @Transactional
     public ResponseEntity alterarAula(@PathVariable("id") Long id,@RequestBody @Valid DadosAlteracaoAula dados){

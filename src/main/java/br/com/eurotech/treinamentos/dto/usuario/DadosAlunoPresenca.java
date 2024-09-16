@@ -7,7 +7,7 @@ public record DadosAlunoPresenca(
     String nome, 
     String re,
     Setor setor,
-    Boolean aulaConcluida
-    
+    Boolean aulaConcluida,
+    String assinatura
 ) {
 }

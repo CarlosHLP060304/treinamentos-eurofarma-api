@@ -21,5 +21,7 @@ public interface AlunoAulaRepository extends JpaRepository<AlunoAula,Long>{
     @Query(value = "DELETE from tb_aluno_aula WHERE id_aluno = :id_aluno", nativeQuery = true)
     void deleteByUsuarioId(@Param("id_aluno") Long id_aluno);
 
+    @Query(value = "select * from tb_aluno_aula where id_aluno = :id_aluno and id_aula = :id_aula", nativeQuery = true)
+    AlunoAula findAlunoAulaByIdAlunoAndIdAula(@Param("id_aluno") Long id_aluno,@Param("id_aula") Long id_aula);
 
 }
