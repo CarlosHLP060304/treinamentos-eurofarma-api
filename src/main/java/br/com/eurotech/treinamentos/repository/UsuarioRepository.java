@@ -15,6 +15,9 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long>{
 
     UserDetails findByCpf(String subject);
 
+    @Query(value = "select id from tb_usuario where cpf = :login;",nativeQuery = true)
+    Long findByLogin(@Param("login") String login);
+
     @Query(value = "SELECT * FROM tb_usuario WHERE id IN (SELECT id_aluno FROM tb_aluno_aula WHERE id_aula = (SELECT id FROM tb_aula WHERE id_treinamento = :id_treinamento AND ativo=1 LIMIT 1) )  AND  ativo = 1 ",nativeQuery = true)
     List<Usuario> findByTreinamento(@Param("id_treinamento")  Long idTreinamento);
  

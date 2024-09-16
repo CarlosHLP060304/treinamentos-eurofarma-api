@@ -44,9 +44,6 @@ public class UsuarioController{
     @Autowired
     private UsuarioRepository repository;
 
-    @Autowired 
-    private AulaRepository aulaRepository;
-
     @GetMapping
     public ResponseEntity<Page<DadosDetalhamentoUsuario>> listarUsuarios(Pageable paginacao){
         var page = repository.findAll(paginacao).map(DadosDetalhamentoUsuario::new);
@@ -96,12 +93,6 @@ public class UsuarioController{
         List<Usuario> usuarios= repository.findByTreinamento(id_treinamento);
         return ResponseEntity.ok(usuarios.stream().map(DadosDetalhamentoUsuario::new).toList());
     }
-
-    // @GetMapping("cpf/{id_funcionario}")
-    // public ResponseEntity<List<DadosDetalhamentoUsuario>> findAllByCPF(@PathVariable("id_funcionario") String id_funcionario){
-    //     List<Usuario> funcionarios = repository.findAllByCpf(id_funcionario);
-    //     return ResponseEntity.ok(funcionarios.stream().map(DadosDetalhamentoUsuario::new).toList());
-    // }
 
     @GetMapping("/{id}")
     public ResponseEntity exibirUsuario(@PathVariable("id") Long id){

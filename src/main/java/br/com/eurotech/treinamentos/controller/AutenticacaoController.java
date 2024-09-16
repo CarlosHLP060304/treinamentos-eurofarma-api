@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import br.com.eurotech.treinamentos.dto.usuario.DadosAutenticacao;
 import br.com.eurotech.treinamentos.dto.usuario.DadosTokenJWT;
 import br.com.eurotech.treinamentos.model.Usuario;
+import br.com.eurotech.treinamentos.repository.UsuarioRepository;
 import br.com.eurotech.treinamentos.services.TokenService;
 import jakarta.validation.Valid;
 
@@ -25,6 +26,10 @@ public class AutenticacaoController {
     @Autowired
     private TokenService tokenService;
 
+
+    @Autowired 
+    private UsuarioRepository repository;
+
     @PostMapping
     public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
 
@@ -35,7 +40,11 @@ public class AutenticacaoController {
 
         var tokenJWT = tokenService.generateToken((Usuario) authentication.getPrincipal());
         
-        return ResponseEntity.ok(new DadosTokenJWT(tokenJWT));
+
+        Long idUsuario = repository.findByLogin(dados.login());
+
+
+        return ResponseEntity.ok(new DadosTokenJWT(idUsuario,tokenJWT));
 
     }
 }
