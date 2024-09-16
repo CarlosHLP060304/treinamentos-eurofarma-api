@@ -125,7 +125,7 @@ public class ExcelService {
             
             String[] labels_tb_treinamento = {"Nome","Descrição","Data"};
             String[] values_tb_treinamento = {treinamento.getNome(),treinamento.getDescricao(),treinamento.getDataInicio()+""};
-            String[] labels_tb_alunos = {"Nome","RE","CPF","Setor","Presente"};
+            String[] labels_tb_alunos = {"Nome","RE","CPF","Setor","Presente","Assinatura"};
             List<DadosAlunoPresenca> listaAlunosPresenca = usuarioRepository.findDadosAlunoPresencasByTreinamento(id_treinamento); 
 
             int numero_row_inicial = 2;
@@ -172,6 +172,7 @@ public class ExcelService {
                 row.createCell(4).setCellValue(dadosAlunoPresenca.cpf());
                 row.createCell(5).setCellValue(dadosAlunoPresenca.setor().toString());
                 row.createCell(6).setCellValue(dadosAlunoPresenca.aulaConcluida() == false ? "AUSENTE" : "PRESENTE");
+                row.createCell(7).setCellValue(dadosAlunoPresenca.assinatura());
             }    
             
             

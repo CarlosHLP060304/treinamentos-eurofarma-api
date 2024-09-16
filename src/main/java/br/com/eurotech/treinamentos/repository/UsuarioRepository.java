@@ -29,7 +29,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long>{
     @Query(value = "select * from tb_usuario where nome like('%', :query, '%') or cpf  like('%', :query, '%') or re like('%', :query, '%')",nativeQuery = true)
     List<Usuario> findByNomeOrCpfOrRe(@Param("query") String query);
 
-    @Query("SELECT new br.com.eurotech.treinamentos.dto.usuario.DadosAlunoPresenca(u.cpf, u.nome, u.re, u.setor, aa.aula_concluida) " +
+    @Query("SELECT new br.com.eurotech.treinamentos.dto.usuario.DadosAlunoPresenca(u.cpf, u.nome, u.re, u.setor, aa.aula_concluida,aa.assinatura) " +
     "FROM Usuario u JOIN AlunoAula aa ON u.id = aa.aluno.id " +
     "JOIN aa.aula a " +
     "WHERE a.treinamento.id = :id_treinamento")
