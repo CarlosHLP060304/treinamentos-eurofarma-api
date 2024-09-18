@@ -10,11 +10,13 @@ import com.google.auth.oauth2.GoogleCredentials;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 
+import jakarta.annotation.PostConstruct;
+
 @Configuration
 public class FirebaseConfig {
 
-  @Bean
-  public FirebaseApp initializeFirebase() throws IOException {
+  @PostConstruct
+  public void initializeFirebase() throws IOException {
     String serviceAccountPath = System.getProperty("user.dir") + "/spring-firebase-key.json";
     FileInputStream serviceAccountStream = new FileInputStream(serviceAccountPath);
 
@@ -22,7 +24,10 @@ public class FirebaseConfig {
             .setCredentials(GoogleCredentials.fromStream(serviceAccountStream))
             .setStorageBucket("firabase-euro.appspot.com")
             .build();
-    return FirebaseApp.initializeApp(options);
+    
+    if(FirebaseApp.getApps().isEmpty()){
+        FirebaseApp.initializeApp(options);
+    }
   }
 
 }
