@@ -34,7 +34,28 @@ public class QuestionarioService {
         ApiFuture<WriteResult> apiFuture= documentReference.set(questionario);        
     }
 
-    public String listarQuestionarios() throws JsonProcessingException {
+    public List<DadosDetalhamentoQuestionario> listarQuestionariosByTreinamento(Long id_treinamento) throws JsonProcessingException {
+        Firestore firestore = FirestoreClient.getFirestore();
+        ApiFuture<QuerySnapshot> apiFuture = firestore.collection("questionario").get();
+        List<DadosDetalhamentoQuestionario> listaQuestionarios = new ArrayList<>();
+        
+        try {
+            List<QueryDocumentSnapshot> documents = apiFuture.get().getDocuments();
+            for (QueryDocumentSnapshot document : documents) {
+                DadosDetalhamentoQuestionario questionario = convertToDadosDetalhamentoQuestionario(document);
+                if(questionario.id_treinamento() == id_treinamento){
+                    listaQuestionarios.add(questionario);
+                }
+            }
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        
+        return listaQuestionarios;
+    }
+
+
+    public List<DadosDetalhamentoQuestionario> listarQuestionarios() throws JsonProcessingException {
         Firestore firestore = FirestoreClient.getFirestore();
         ApiFuture<QuerySnapshot> apiFuture = firestore.collection("questionario").get();
         List<DadosDetalhamentoQuestionario> listaQuestionarios = new ArrayList<>();
@@ -44,14 +65,17 @@ public class QuestionarioService {
             for (QueryDocumentSnapshot document : documents) {
                 DadosDetalhamentoQuestionario questionario = convertToDadosDetalhamentoQuestionario(document);
                 listaQuestionarios.add(questionario);
+                
             }
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
         
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(listaQuestionarios);
+        return listaQuestionarios;
     }
+
+
+    
 private DadosDetalhamentoQuestionario convertToDadosDetalhamentoQuestionario(QueryDocumentSnapshot doc) {
     Long idTreinamento = doc.getLong("id_treinamento");
     List<Map<String, Object>> questoesMaps = (List<Map<String, Object>>) doc.get("questoes");
