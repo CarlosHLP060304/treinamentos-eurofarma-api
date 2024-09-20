@@ -98,6 +98,26 @@ public class AulaController {
     }
 
 
+    @PutMapping("/users/edit")
+    @Transactional
+    public ResponseEntity alterarAlunoAula(@RequestBody @Valid DadosAlteracaoAlunoAula dados,UriComponentsBuilder uriBuilder){
+        List<Usuario> usuarios_banco = alunoAulaRepository.findByIdAluno();
+
+        for (Long dadosIdUsuario : dados.alunos_deletados()) {
+            alunoAulaRepository.deleteByUsuarioId(dadosIdUsuario);
+        }
+
+        for(Long dadosIdUsuario : dados.alunos_adicionados()){
+
+            alunoAulaRepository.save(new AlunoAula(usuarioRepository.getReferenceById(dadosIdUsuario),repository.getReferenceById(dados.id_treinamento())));
+
+        }
+
+        return ResponseEntity.noContent().build();
+    }
+
+
+
     @PutMapping("/registrarPresenca")
     @Transactional
     public ResponseEntity registrarPresenca ( @RequestPart("assinaturaFile") MultipartFile assinaturaFile,
