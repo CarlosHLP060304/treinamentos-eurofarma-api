@@ -24,6 +24,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.List;
+import br.com.eurotech.treinamentos.model.DataEHoraFormat;
+
 
 @Service
 public class ExcelService {
@@ -94,7 +96,7 @@ public class ExcelService {
                 Row row = sheet.createRow(++numero_row_inicial);
                 row.createCell(2).setCellValue(dadosHistoricoTreinamento.nome());
                 row.createCell(3).setCellValue(dadosHistoricoTreinamento.aula_concluida() == false ? "AUSENTE" : "PRESENTE");
-                row.createCell(4).setCellValue(dadosHistoricoTreinamento.data_inicio()+"");
+                row.createCell(4).setCellValue(DataEHoraFormat.returndataFormatada(dadosHistoricoTreinamento.data_inicio()));
             }    
             
             
@@ -124,7 +126,7 @@ public class ExcelService {
 
             
             String[] labels_tb_treinamento = {"Nome","Descrição","Data"};
-            String[] values_tb_treinamento = {treinamento.getNome(),treinamento.getDescricao(),treinamento.getDataInicio()+""};
+            String[] values_tb_treinamento = {treinamento.getNome(),treinamento.getDescricao(),DataEHoraFormat.returndataFormatada(treinamento.getDataInicio())};
             String[] labels_tb_alunos = {"Nome","RE","CPF","Setor","Presente","Assinatura"};
             List<DadosAlunoPresenca> listaAlunosPresenca = usuarioRepository.findDadosAlunoPresencasByTreinamento(id_treinamento); 
 
@@ -172,7 +174,7 @@ public class ExcelService {
                 row.createCell(4).setCellValue(dadosAlunoPresenca.cpf());
                 row.createCell(5).setCellValue(dadosAlunoPresenca.setor().toString());
                 row.createCell(6).setCellValue(dadosAlunoPresenca.aulaConcluida() == false ? "AUSENTE" : "PRESENTE");
-                row.createCell(7).setCellValue(dadosAlunoPresenca.assinatura());
+                row.createCell(7).setCellValue(dadosAlunoPresenca.assinatura() != null ? dadosAlunoPresenca.assinatura() : "-");
             }    
             
             
