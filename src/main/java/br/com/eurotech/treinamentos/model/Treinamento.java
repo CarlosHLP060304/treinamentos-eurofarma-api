@@ -83,6 +83,9 @@ public class Treinamento {
     }
 
 
+
+    
+
     // public Boolean verificacaoDeConclusaoTreinamento(){
     //     boolean concluido = false;
     //     int contadorPresenca = 0;
