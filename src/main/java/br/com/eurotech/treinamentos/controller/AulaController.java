@@ -6,10 +6,12 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,6 +41,7 @@ import br.com.eurotech.treinamentos.dto.aula.DadosAlteracaoAula;
 import br.com.eurotech.treinamentos.dto.aula.DadosCadastroAula;
 import br.com.eurotech.treinamentos.dto.aula.DadosDetalhamentoAula;
 import br.com.eurotech.treinamentos.dto.aula.DadosIdAula;
+import br.com.eurotech.treinamentos.dto.presenca.DadosPresenca;
 import br.com.eurotech.treinamentos.dto.usuario.DadosCadastroUsuario;
 import br.com.eurotech.treinamentos.dto.usuario.DadosIdUsuario;
 import br.com.eurotech.treinamentos.model.AlunoAula;
@@ -118,30 +121,31 @@ public class AulaController {
 
 
 
-    @PutMapping("/registrarPresenca")
-    @Transactional
-    public ResponseEntity registrarPresenca ( @RequestPart("assinaturaFile") MultipartFile assinaturaFile,
-    @RequestParam("id_aula") Long id_aula,
-    @RequestParam("id_aluno") Long id_aluno){
-       Bucket bucket = StorageClient.getInstance().bucket();
-       AlunoAula alunoAula =  alunoAulaRepository.findAlunoAulaByIdAlunoAndIdAula(id_aluno,id_aula);
-       Usuario usuario  = usuarioRepository.getReferenceById(id_aluno);
-       Aula aula = repository.getReferenceById(id_aula);
-       String name = usuario.getRe() + "aula" +aula.getId();
-       String downloadUrl = "";
-       
-       try {
-           bucket.create(name, assinaturaFile.getBytes(), assinaturaFile.getContentType());
-           downloadUrl = getImageUrl(imageBaseUrl,name);
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
+@PutMapping("/registrarPresenca")
+@Transactional
+public ResponseEntity registrarPresenca(@RequestBody DadosPresenca dadosPresenca) {
+    Bucket bucket = StorageClient.getInstance().bucket();
+    Aula aula = repository.findByTreinamentoIdAndAtivoTrue(dadosPresenca.idTreinamento()).get(0);
+    AlunoAula alunoAula = alunoAulaRepository.findAlunoAulaByIdAlunoAndIdAula(dadosPresenca.idAluno(), aula.getId());
+    Usuario usuario = usuarioRepository.getReferenceById(dadosPresenca.idAluno());
+    String name = usuario.getRe() + "treinamento" + dadosPresenca.idTreinamento();
+    String downloadUrl = "";
 
-       alunoAula.setAssinatura(downloadUrl);
-       alunoAula.setAula_concluida(true);
-
-       return ResponseEntity.noContent().build();
+    try {
+        byte[] assinaturaBytes = Base64.getDecoder().decode(dadosPresenca.assinaturaFile());
+        bucket.create(name, assinaturaBytes, "image/png"); // Ajuste o tipo MIME conforme necessário
+        downloadUrl = getImageUrl(imageBaseUrl, name);
+    } catch (IllegalArgumentException | IOException | InterruptedException e) {
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao processar a assinatura.");
     }
+
+    alunoAula.setAssinatura(downloadUrl);
+    alunoAula.setAula_concluida(true);
+
+    return ResponseEntity.noContent().build();
+}
+
       
     public String getImageUrl(String baseUrl,String name) throws IOException, InterruptedException {
     HttpClient client = HttpClient.newHttpClient();
