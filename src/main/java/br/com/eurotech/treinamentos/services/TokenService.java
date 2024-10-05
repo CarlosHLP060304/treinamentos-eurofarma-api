@@ -25,7 +25,7 @@ public class TokenService {
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
             .withIssuer("Treinamentos").
-             withSubject(user.getCpf()).
+             withSubject(user.getRe()).
              withExpiresAt(genExpirationDate())
             .sign(algorithm);
         } catch (JWTCreationException exception){

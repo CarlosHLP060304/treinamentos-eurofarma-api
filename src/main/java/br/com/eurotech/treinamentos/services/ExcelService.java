@@ -50,8 +50,8 @@ public class ExcelService {
             cellStyleTitle.setAlignment(HorizontalAlignment.CENTER);
 
             
-            String[] labels_tb_funcionario = {"Nome","RE","CPF"};
-            String[] values_tb_funcionario = {usuario.getNome(),usuario.getRe(),usuario.getCpf()};
+            String[] labels_tb_funcionario = {"Nome","RE","Setor"};
+            String[] values_tb_funcionario = {usuario.getNome(),usuario.getRe(),usuario.getSetor().toString()};
             String[] labels_tb_historico_treinamentos = {"Treinamento","Status","Data"};
             List<DadosHistoricoTreinamento> listaDadosHistoricoTreinamento =  treinamentoRepository.findTreinamentosByAluno(usuario.getId()); 
 
@@ -127,7 +127,7 @@ public class ExcelService {
             
             String[] labels_tb_treinamento = {"Nome","Descrição","Data"};
             String[] values_tb_treinamento = {treinamento.getNome(),treinamento.getDescricao(),DataEHoraFormat.returndataFormatada(treinamento.getDataInicio())};
-            String[] labels_tb_alunos = {"Nome","RE","CPF","Setor","Presente","Assinatura"};
+            String[] labels_tb_alunos = {"Nome","RE","Setor","Presente","Assinatura"};
             List<DadosAlunoPresenca> listaAlunosPresenca = usuarioRepository.findDadosAlunoPresencasByTreinamento(id_treinamento); 
 
             int numero_row_inicial = 2;
@@ -171,10 +171,9 @@ public class ExcelService {
                 Row row = sheet.createRow(++numero_row_inicial);
                 row.createCell(2).setCellValue(dadosAlunoPresenca.nome());
                 row.createCell(3).setCellValue(dadosAlunoPresenca.re());
-                row.createCell(4).setCellValue(dadosAlunoPresenca.cpf());
-                row.createCell(5).setCellValue(dadosAlunoPresenca.setor().toString());
-                row.createCell(6).setCellValue(dadosAlunoPresenca.aulaConcluida() == false ? "AUSENTE" : "PRESENTE");
-                row.createCell(7).setCellValue(dadosAlunoPresenca.assinatura() != null ? dadosAlunoPresenca.assinatura() : "-");
+                row.createCell(4).setCellValue(dadosAlunoPresenca.setor().toString());
+                row.createCell(5).setCellValue(dadosAlunoPresenca.aulaConcluida() == false ? "AUSENTE" : "PRESENTE");
+                row.createCell(6).setCellValue(dadosAlunoPresenca.assinatura() != null ? dadosAlunoPresenca.assinatura() : "-");
             }    
             
             

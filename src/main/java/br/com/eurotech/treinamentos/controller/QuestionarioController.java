@@ -40,7 +40,8 @@ public class QuestionarioController {
     @GetMapping("/{id_treinamento}")
     public ResponseEntity getQuestionariosByTreinamento(@PathVariable("id_treinamento") Long id_treinamento){
         try {
-            DadosDetalhamentoQuestionario lista_questionarios_json = service.listarQuestionariosByTreinamento(id_treinamento).get(0);
+            var listaQuestionarios = service.listarQuestionariosByTreinamento(id_treinamento);
+            DadosDetalhamentoQuestionario lista_questionarios_json = listaQuestionarios.get(listaQuestionarios.size()-1);
             return ResponseEntity.ok(lista_questionarios_json);
         } catch (JsonProcessingException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());

@@ -62,9 +62,9 @@ public class UsuarioController{
         return ResponseEntity.ok(usuarios);
     }
 
-    @GetMapping("/research/cpf_re_nome")
-    public ResponseEntity<List<DadosDetalhamentoUsuario>> listarByQueryNomeOrCpfOrRe(@RequestParam("query") String query){
-        List<DadosDetalhamentoUsuario> usuarios = repository.findByQuery(query).stream().map(DadosDetalhamentoUsuario::new).toList();
+    @GetMapping("/research/re_nome")
+    public ResponseEntity<List<DadosDetalhamentoUsuario>> listarByQueryNomeOrRe(@RequestParam("query") String query){
+        List<DadosDetalhamentoUsuario> usuarios = repository.findByNomeOrRe(query).stream().map(DadosDetalhamentoUsuario::new).toList();
         return ResponseEntity.ok(usuarios);
     }
 
