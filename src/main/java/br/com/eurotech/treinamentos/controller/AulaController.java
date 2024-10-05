@@ -105,15 +105,13 @@ public class AulaController {
     @Transactional
     public ResponseEntity alterarAlunoAula(@RequestBody @Valid DadosAlteracaoAlunoAula dados,UriComponentsBuilder uriBuilder){
         List<Usuario> usuarios_banco = alunoAulaRepository.findByIdAluno();
-
+        Aula aula = repository.findByTreinamentoIdAndAtivoTrue(dados.id_treinamento()).get(0);
         for (Long dadosIdUsuario : dados.alunos_deletados()) {
-            alunoAulaRepository.deleteByUsuarioId(dadosIdUsuario);
+            alunoAulaRepository.deleteByUsuarioAndAulaId(dadosIdUsuario,aula.getId());
         }
 
         for(Long dadosIdUsuario : dados.alunos_adicionados()){
-
-            alunoAulaRepository.save(new AlunoAula(usuarioRepository.getReferenceById(dadosIdUsuario),repository.getReferenceById(dados.id_treinamento())));
-
+            alunoAulaRepository.save(new AlunoAula(usuarioRepository.getReferenceById(dadosIdUsuario),aula));
         }
 
         return ResponseEntity.noContent().build();
