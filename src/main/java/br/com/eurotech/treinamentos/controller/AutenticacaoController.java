@@ -1,5 +1,7 @@
 package br.com.eurotech.treinamentos.controller;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +15,7 @@ import br.com.eurotech.treinamentos.dto.usuario.DadosAutenticacao;
 import br.com.eurotech.treinamentos.dto.usuario.DadosTokenJWT;
 import br.com.eurotech.treinamentos.model.Usuario;
 import br.com.eurotech.treinamentos.repository.UsuarioRepository;
+import br.com.eurotech.treinamentos.services.CloudflareTurnstileService;
 import br.com.eurotech.treinamentos.services.TokenService;
 import jakarta.validation.Valid;
 
@@ -30,9 +33,15 @@ public class AutenticacaoController {
     @Autowired 
     private UsuarioRepository repository;
 
+    @Autowired
+    private CloudflareTurnstileService service;
+
     @PostMapping
     public ResponseEntity efetuarLogin(@RequestBody @Valid DadosAutenticacao dados) {
 
+        if(dados.tokenCloudFlare() == null || !service.validaCaptchaAsync(dados.tokenCloudFlare()).join()){
+            return ResponseEntity.badRequest().build();
+        }
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
 
 
@@ -45,6 +54,7 @@ public class AutenticacaoController {
 
 
         return ResponseEntity.ok(new DadosTokenJWT(idUsuario,tokenJWT));
+
 
     }
 }
