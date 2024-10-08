@@ -18,4 +18,7 @@ public interface TreinamentoRepository extends JpaRepository<Treinamento,Long>{
            "JOIN a.treinamento t " +
            "WHERE aa.aluno.id = :id_aluno")
     List<DadosHistoricoTreinamento> findTreinamentosByAluno(@Param("id_aluno") Long id_aluno);
+
+    @Query(value = "select  * from tb_treinamento as t where date(t.data_inicio) = curdate()",nativeQuery = true)
+    List<Treinamento> findTreinamentosDeHoje();
 }

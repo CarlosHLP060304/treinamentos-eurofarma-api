@@ -50,6 +50,11 @@ public class TreinamentoController {
         return ResponseEntity.ok(treinamentos);
     }
 
+    @GetMapping("/hoje")
+    public ResponseEntity<List<DadosDetalhamentoTreinamento>> findTreinamentosDeHoje(){
+        List<DadosDetalhamentoTreinamento> treinamentosHoje = repository.findTreinamentosDeHoje().stream().map(DadosDetalhamentoTreinamento::new).toList();
+        return ResponseEntity.ok(treinamentosHoje);
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<DadosDetalhamentoTreinamento> findById(@PathVariable("id") Long id){
