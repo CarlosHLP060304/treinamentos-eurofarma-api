@@ -31,9 +31,6 @@ public class SecurityConfiguration implements WebMvcConfigurer{
         sessionManagement(session->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)).
         authorizeHttpRequests(
              authorize -> authorize.requestMatchers(HttpMethod.POST,"/login").permitAll().
-                         requestMatchers(HttpMethod.POST,"/treinamento","/aula","/apostila").hasRole("ANALISTA").
-                         requestMatchers(HttpMethod.PUT,"/treinamento/{id}","/aula/{id}","/apostila/{id}").hasRole("ANALISTA").
-                         requestMatchers(HttpMethod.DELETE,"/treinamento/{id}","/aula/{id}","/apostila/{id}").hasRole("ANALISTA").
                          anyRequest().permitAll()
         ).addFilterBefore(securityFilter,UsernamePasswordAuthenticationFilter.class).
         build();

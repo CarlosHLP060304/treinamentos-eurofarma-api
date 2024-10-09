@@ -84,19 +84,4 @@ public class Treinamento {
 
 
 
-    
-
-    // public Boolean verificacaoDeConclusaoTreinamento(){
-    //     boolean concluido = false;
-    //     int contadorPresenca = 0;
-    //     for (Aula aula: aulas) {
-    //         if(aula.getPresente().equals(true)){
-    //             contadorPresenca++;
-    //         }
-    //     }
-    //     if (aulas.size() == contadorPresenca) {
-    //         concluido = true;
-    //     }
-    //     return concluido;
-    // }
 }
