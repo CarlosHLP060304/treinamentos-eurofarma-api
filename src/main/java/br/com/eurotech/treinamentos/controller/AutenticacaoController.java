@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.eurotech.treinamentos.dto.usuario.DadosAutenticacao;
+import br.com.eurotech.treinamentos.dto.usuario.DadosDetalhamentoUsuario;
 import br.com.eurotech.treinamentos.dto.usuario.DadosTokenJWT;
+import br.com.eurotech.treinamentos.model.TipoUsuario;
 import br.com.eurotech.treinamentos.model.Usuario;
 import br.com.eurotech.treinamentos.repository.UsuarioRepository;
 import br.com.eurotech.treinamentos.services.CloudflareTurnstileService;
@@ -60,12 +62,14 @@ public class AutenticacaoController {
     }
 
     @GetMapping
-    public ResponseEntity<Void> validarToken(@RequestParam("token") String token){
+    public ResponseEntity<DadosDetalhamentoUsuario> validarUsuarioLogado(@RequestParam("token") String token,@RequestParam("idUsuario") Long idUsuario){
         Boolean isTokenValido = tokenService.validateToken(token).equals("") ? false : true;
-        if(isTokenValido){
-            return ResponseEntity.ok().build();
+        DadosDetalhamentoUsuario usuario = new DadosDetalhamentoUsuario(repository.getReferenceById(idUsuario));
+        Boolean isAnalista = usuario.tipo().equals(TipoUsuario.ANALISTA);  
+        if(isTokenValido && isAnalista){
+            return ResponseEntity.ok(usuario);
         }else{
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.badRequest().build();
         }
     }
 }
