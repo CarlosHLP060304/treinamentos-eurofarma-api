@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.data.util.Streamable;
 
 import br.com.eurotech.treinamentos.dto.treinamento.DadosHistoricoTreinamento;
+import br.com.eurotech.treinamentos.dto.treinamento.DadosListagemTreinamento;
 import br.com.eurotech.treinamentos.model.Treinamento;
 
 public interface TreinamentoRepository extends JpaRepository<Treinamento,Long>{
@@ -21,4 +23,7 @@ public interface TreinamentoRepository extends JpaRepository<Treinamento,Long>{
 
     @Query(value = "select  * from tb_treinamento as t where date(t.data_inicio) = curdate()",nativeQuery = true)
     List<Treinamento> findTreinamentosDeHoje();
+
+    @Query(value = "select * from tb_treinamento where nome like concat('%', :nome, '%')", nativeQuery = true)
+    List<Treinamento> findByNome(String nome);
 }
