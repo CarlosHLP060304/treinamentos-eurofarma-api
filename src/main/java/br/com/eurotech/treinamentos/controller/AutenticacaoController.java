@@ -61,6 +61,24 @@ public class AutenticacaoController {
 
     }
 
+    @PostMapping("/mobile")
+    public ResponseEntity efetuarLoginMobile(@RequestBody @Valid DadosAutenticacao dados) {
+
+        var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
+
+
+        var authentication = manager.authenticate(authenticationToken);
+
+        var tokenJWT = tokenService.generateToken((Usuario) authentication.getPrincipal());
+        
+
+        Long idUsuario = repository.findByLogin(dados.login());
+
+
+        return ResponseEntity.ok(new DadosTokenJWT(idUsuario,tokenJWT));
+
+    }
+
     @GetMapping
     public ResponseEntity<DadosDetalhamentoUsuario> validarUsuarioLogado(@RequestParam("token") String token,@RequestParam("idUsuario") Long idUsuario){
         Boolean isTokenValido = tokenService.validateToken(token).equals("") ? false : true;

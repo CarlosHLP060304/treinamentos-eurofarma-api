@@ -5,6 +5,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.UriBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.threeten.bp.LocalDate;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -46,9 +48,11 @@ import br.com.eurotech.treinamentos.dto.usuario.DadosCadastroUsuario;
 import br.com.eurotech.treinamentos.dto.usuario.DadosIdUsuario;
 import br.com.eurotech.treinamentos.model.AlunoAula;
 import br.com.eurotech.treinamentos.model.Aula;
+import br.com.eurotech.treinamentos.model.Treinamento;
 import br.com.eurotech.treinamentos.model.Usuario;
 import br.com.eurotech.treinamentos.repository.AlunoAulaRepository;
 import br.com.eurotech.treinamentos.repository.AulaRepository;
+import br.com.eurotech.treinamentos.repository.TreinamentoRepository;
 import br.com.eurotech.treinamentos.repository.UsuarioRepository;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -66,6 +70,9 @@ public class AulaController {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired 
+    private TreinamentoRepository treinamentoRepository;
 
     @Value("${image.base.url}")
     private String imageBaseUrl;
@@ -127,7 +134,15 @@ public ResponseEntity registrarPresenca(@RequestBody DadosPresenca dadosPresenca
     AlunoAula alunoAula = alunoAulaRepository.findAlunoAulaByIdAlunoAndIdAula(dadosPresenca.idAluno(), aula.getId());
     Usuario usuario = usuarioRepository.getReferenceById(dadosPresenca.idAluno());
     String name = usuario.getRe() + "treinamento" + dadosPresenca.idTreinamento();
+    Treinamento treinamento = treinamentoRepository.getReferenceById(dadosPresenca.idTreinamento());
     String downloadUrl = "";
+    LocalDateTime dataEHoraDoInicioTreinamento  = treinamento.getDataInicio();
+    LocalDateTime dataEHoraDoFimTreinamento  = treinamento.getDataFim();
+    Boolean isTreinamentoNoDiaEHoraCorretos = !LocalDateTime.now().isBefore(dataEHoraDoInicioTreinamento) && !LocalDateTime.now().isAfter(dataEHoraDoFimTreinamento.plusHours(2));
+    
+    if(!isTreinamentoNoDiaEHoraCorretos){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Essa validação está sendo feita fora do período permitido,portanto sua presença não pode ser registrada!");
+    }
 
     try {
         byte[] assinaturaBytes = Base64.getDecoder().decode(dadosPresenca.assinaturaFile());
@@ -137,6 +152,7 @@ public ResponseEntity registrarPresenca(@RequestBody DadosPresenca dadosPresenca
         e.printStackTrace();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao processar a assinatura.");
     }
+
 
     alunoAula.setAssinatura(downloadUrl);
     alunoAula.setAula_concluida(true);
