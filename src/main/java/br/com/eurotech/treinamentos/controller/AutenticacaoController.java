@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.eurotech.treinamentos.dto.usuario.DadosAutenticacao;
+import br.com.eurotech.treinamentos.dto.usuario.DadosAutenticacaoMobile;
 import br.com.eurotech.treinamentos.dto.usuario.DadosDetalhamentoUsuario;
 import br.com.eurotech.treinamentos.dto.usuario.DadosTokenJWT;
 import br.com.eurotech.treinamentos.model.TipoUsuario;
@@ -62,7 +63,7 @@ public class AutenticacaoController {
     }
 
     @PostMapping("/mobile")
-    public ResponseEntity efetuarLoginMobile(@RequestBody @Valid DadosAutenticacao dados) {
+    public ResponseEntity efetuarLoginMobile(@RequestBody @Valid DadosAutenticacaoMobile dados) {
 
         var authenticationToken = new UsernamePasswordAuthenticationToken(dados.login(), dados.senha());
 
