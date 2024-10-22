@@ -8,6 +8,7 @@ public record DadosHistoricoTreinamento(
     String nome,
     LocalDateTime data_inicio,
     LocalDateTime data_fim,
+    String timezone,
     String sala,
     String nome_professor,
     Long id_treinamento

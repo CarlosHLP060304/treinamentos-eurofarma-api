@@ -44,6 +44,8 @@ public class Treinamento {
     private LocalDateTime dataFim;
 
     private String nomeProfessor;
+    
+    private String timezone;
 
     private String cpfProfessor;
 
@@ -80,6 +82,7 @@ public class Treinamento {
         this.dataFim = dto.dataFim();
         this.descricao = dto.descricao();
         this.formato = dto.formato();
+        this.timezone = dto.timezone();
     }
 
 

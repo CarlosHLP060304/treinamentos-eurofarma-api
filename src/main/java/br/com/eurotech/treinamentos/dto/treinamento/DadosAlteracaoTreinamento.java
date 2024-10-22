@@ -28,6 +28,8 @@ public record DadosAlteracaoTreinamento(
 
      // @NotBlank(message = "Campo de capa não pode estar vazio")
      // String capa,
+
+     String timezone,
     
      @NotBlank(message = "Campo de nome do professor não pode estar vazio")
      String nomeProfessor,

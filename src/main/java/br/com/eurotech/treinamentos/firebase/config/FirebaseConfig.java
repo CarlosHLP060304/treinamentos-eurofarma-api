@@ -17,8 +17,8 @@ public class FirebaseConfig {
 
   @PostConstruct
   public void initializeFirebase() throws IOException {
-    //String serviceAccountPath = System.getProperty("user.dir") + "/spring-firebase-key.json";
-    String serviceAccountPath = "/etc/secrets/spring-firebase-key.json";
+    String serviceAccountPath = System.getProperty("user.dir") + "/spring-firebase-key.json";
+    //String serviceAccountPath = "/etc/secrets/spring-firebase-key.json";
     FileInputStream serviceAccountStream = new FileInputStream(serviceAccountPath);
 
     FirebaseOptions options = FirebaseOptions.builder()
