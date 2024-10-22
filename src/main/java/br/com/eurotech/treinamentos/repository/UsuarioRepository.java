@@ -18,9 +18,12 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long>{
     @Query(value = "select id from tb_usuario where re = :login;",nativeQuery = true)
     Long findByLogin(@Param("login") String login);
 
-    @Query(value = "SELECT * FROM tb_usuario WHERE id IN (SELECT id_aluno FROM tb_aluno_aula WHERE id_aula = (SELECT id FROM tb_aula WHERE id_treinamento = :id_treinamento AND ativo=1 LIMIT 1) )  AND  ativo = 1 ",nativeQuery = true)
-    List<Usuario> findByTreinamento(@Param("id_treinamento")  Long idTreinamento);
- 
+    @Query("SELECT u FROM Usuario u WHERE u.id IN " +
+       "(SELECT aa.aluno.id FROM AlunoAula aa WHERE aa.aula.id IN " +
+       "(SELECT a.id FROM Aula a WHERE a.treinamento.id = :id_treinamento AND a.ativo = true)) " +
+       "AND u.ativo = true")
+        List<Usuario> findByTreinamento(@Param("id_treinamento") Long idTreinamento);
+
 
     List<Usuario> findBySetor(Setor setor);
 
