@@ -44,13 +44,13 @@ public class ApostilaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DadosDetalhamentoApostila> findById(@PathVariable("id") Long id){
+    public ResponseEntity<DadosDetalhamentoApostila> findApostilaById(@PathVariable("id") Long id){
         Apostila apostila = repository.getReferenceById(id);
         return ResponseEntity.ok(new DadosDetalhamentoApostila(apostila));
     }
 
     @GetMapping("/treinamento/{id}")
-    public ResponseEntity findByTreinamento(@PathVariable("id") Long id_treinamento){
+    public ResponseEntity findApostilasByTreinamento(@PathVariable("id") Long id_treinamento){
         List<Apostila> apostilas = repository.findByTreinamentoId(id_treinamento);
         return ResponseEntity.ok(apostilas.stream().map(DadosDetalhamentoApostila::new).toList());
     }
