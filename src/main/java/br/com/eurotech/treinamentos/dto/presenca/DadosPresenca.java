@@ -7,7 +7,7 @@ public record DadosPresenca(
     Long idTreinamento,
     Long idAluno,
     String timezone,
-    LocalDateTime dataEHoraAparelhoAluno
+    String dataEHoraAparelhoAluno
 ) {
     
 }
