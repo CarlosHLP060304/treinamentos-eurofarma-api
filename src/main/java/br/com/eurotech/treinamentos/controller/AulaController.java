@@ -6,6 +6,8 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
@@ -136,10 +138,11 @@ public ResponseEntity registrarPresenca(@RequestBody DadosPresenca dadosPresenca
     String name = usuario.getRe() + "treinamento" + dadosPresenca.idTreinamento();
     Treinamento treinamento = treinamentoRepository.getReferenceById(dadosPresenca.idTreinamento());
     String downloadUrl = "";
-    LocalDateTime dataEHoraDoInicioTreinamento  = treinamento.getDataInicio();
-    LocalDateTime dataEHoraDoFimTreinamento  = treinamento.getDataFim();
-    Boolean isTreinamentoNoDiaEHoraCorretos = !LocalDateTime.now().isBefore(dataEHoraDoInicioTreinamento) && !LocalDateTime.now().isAfter(dataEHoraDoFimTreinamento.plusHours(2));
-    
+    ZoneOffset offset = ZoneOffset.of("-03:00");
+    OffsetDateTime inicioTreinamentoUTC = treinamento.getDataInicio().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
+    OffsetDateTime fimTreinamentoUTC = treinamento.getDataFim().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
+    OffsetDateTime aparelhoAlunoUTC = dadosPresenca.dataEHoraAparelhoAluno().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
+    Boolean isTreinamentoNoDiaEHoraCorretos = !aparelhoAlunoUTC .isBefore(inicioTreinamentoUTC) && !aparelhoAlunoUTC.isAfter(fimTreinamentoUTC.plusHours(2));
     if(!isTreinamentoNoDiaEHoraCorretos){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Essa validação está sendo feita fora do período permitido,portanto sua presença não pode ser registrada!");
     }

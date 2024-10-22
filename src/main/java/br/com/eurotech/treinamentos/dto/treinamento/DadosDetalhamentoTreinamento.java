@@ -21,11 +21,13 @@ public record DadosDetalhamentoTreinamento(
 
      String nomeProfessor,
 
+     String timezone,
+
      String cpfProfessor
 ){
 
      public DadosDetalhamentoTreinamento(Treinamento treinamento) {
-          this(treinamento.getId(), treinamento.getNome(), treinamento.getDescricao(), treinamento.getFormato(), treinamento.getAtivo(), treinamento.getDataInicio(), treinamento.getDataFim(),treinamento.getNomeProfessor(), treinamento.getCpfProfessor());
+          this(treinamento.getId(), treinamento.getNome(), treinamento.getDescricao(), treinamento.getFormato(), treinamento.getAtivo(), treinamento.getDataInicio(), treinamento.getDataFim(),treinamento.getNomeProfessor(), treinamento.getTimezone() ,treinamento.getCpfProfessor());
      }
 
     

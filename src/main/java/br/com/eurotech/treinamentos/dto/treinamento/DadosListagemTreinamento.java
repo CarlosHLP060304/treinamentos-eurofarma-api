@@ -19,6 +19,8 @@ public record DadosListagemTreinamento(
        
      LocalDateTime dataFim,
 
+     String timezone,
+
      String nomeProfessor,
 
      String cpfProfessor
@@ -29,7 +31,7 @@ public record DadosListagemTreinamento(
 ){
 
      public DadosListagemTreinamento(Treinamento treinamento) {
-          this(treinamento.getId(), treinamento.getNome(), treinamento.getDescricao(), treinamento.getFormato(), treinamento.getAtivo(), treinamento.getDataInicio(), treinamento.getDataFim(), treinamento.getNomeProfessor(), treinamento.getCpfProfessor());
+          this(treinamento.getId(), treinamento.getNome(), treinamento.getDescricao(), treinamento.getFormato(), treinamento.getAtivo(), treinamento.getDataInicio(), treinamento.getDataFim(), treinamento.getTimezone(),treinamento.getNomeProfessor(), treinamento.getCpfProfessor());
      }
 
     

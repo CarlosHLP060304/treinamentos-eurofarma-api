@@ -14,7 +14,7 @@ import br.com.eurotech.treinamentos.model.Treinamento;
 public interface TreinamentoRepository extends JpaRepository<Treinamento,Long>{
 
     @Query("SELECT new br.com.eurotech.treinamentos.dto.treinamento.DadosHistoricoTreinamento(" +
-           "aa.aluno.id, aa.aula_concluida,t.nome,t.dataInicio,t.dataFim,a.sala,t.nomeProfessor,a.treinamento.id) " +
+           "aa.aluno.id, aa.aula_concluida,t.nome,t.dataInicio,t.dataFim,t.timezone,a.sala,t.nomeProfessor,a.treinamento.id) " +
            "FROM AlunoAula aa " +
            "JOIN aa.aula a " +
            "JOIN a.treinamento t " +
