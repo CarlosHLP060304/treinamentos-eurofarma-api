@@ -89,7 +89,7 @@ public class UsuarioController{
 
 
     @GetMapping("/treinamento/{id}")
-    public ResponseEntity findByTreinamento(@PathVariable("id") Long id_treinamento){
+    public ResponseEntity findAlunoByTreinamento(@PathVariable("id") Long id_treinamento){
         List<Usuario> usuarios= repository.findByTreinamento(id_treinamento);
         return ResponseEntity.ok(usuarios.stream().map(DadosDetalhamentoUsuario::new).toList());
     }
