@@ -141,11 +141,11 @@ public ResponseEntity registrarPresenca(@RequestBody DadosPresenca dadosPresenca
     ZoneOffset offset = ZoneOffset.of("-03:00");
     OffsetDateTime inicioTreinamentoUTC = treinamento.getDataInicio().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
     OffsetDateTime fimTreinamentoUTC = treinamento.getDataFim().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
-    // OffsetDateTime aparelhoAlunoUTC = dadosPresenca.dataEHoraAparelhoAluno().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
-    // Boolean isTreinamentoNoDiaEHoraCorretos = !aparelhoAlunoUTC .isBefore(inicioTreinamentoUTC) && !aparelhoAlunoUTC.isAfter(fimTreinamentoUTC.plusHours(2));
-    // if(!isTreinamentoNoDiaEHoraCorretos){
-    //     return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Essa validação está sendo feita fora do período permitido,portanto sua presença não pode ser registrada!");
-    // }
+    OffsetDateTime aparelhoAlunoUTC = dadosPresenca.dataEHoraAparelhoAluno().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
+    Boolean isTreinamentoNoDiaEHoraCorretos = !aparelhoAlunoUTC .isBefore(inicioTreinamentoUTC) && !aparelhoAlunoUTC.isAfter(fimTreinamentoUTC.plusHours(2));
+    if(!isTreinamentoNoDiaEHoraCorretos){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Essa validação está sendo feita fora do período permitido,portanto sua presença não pode ser registrada!");
+    }
 
     try {
         byte[] assinaturaBytes = Base64.getDecoder().decode(dadosPresenca.assinaturaFile());
