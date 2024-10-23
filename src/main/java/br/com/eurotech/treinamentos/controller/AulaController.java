@@ -138,12 +138,8 @@ public ResponseEntity registrarPresenca(@RequestBody DadosPresenca dadosPresenca
     String name = usuario.getRe() + "treinamento" + dadosPresenca.idTreinamento();
     Treinamento treinamento = treinamentoRepository.getReferenceById(dadosPresenca.idTreinamento());
     String downloadUrl = "";
-    ZoneOffset offset = ZoneOffset.of("-03:00");
-    OffsetDateTime inicioTreinamentoUTC = treinamento.getDataInicio().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
-    OffsetDateTime fimTreinamentoUTC = treinamento.getDataFim().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
-    OffsetDateTime aparelhoAlunoUTC = dadosPresenca.dataEHoraAparelhoAluno().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
-    Boolean isTreinamentoNoDiaEHoraCorretos = !aparelhoAlunoUTC .isBefore(inicioTreinamentoUTC) && !aparelhoAlunoUTC.isAfter(fimTreinamentoUTC.plusHours(2));
-    if(!isTreinamentoNoDiaEHoraCorretos){
+    
+    if(!verificaDiaEHorarioValidacao(treinamento, dadosPresenca)){
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Essa validação está sendo feita fora do período permitido,portanto sua presença não pode ser registrada!");
     }
 
@@ -156,13 +152,23 @@ public ResponseEntity registrarPresenca(@RequestBody DadosPresenca dadosPresenca
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Erro ao processar a assinatura.");
     }
 
-
     alunoAula.setAssinatura(downloadUrl);
     alunoAula.setAula_concluida(true);
 
     return ResponseEntity.noContent().build();
 }
 
+    public Boolean verificaDiaEHorarioValidacao(Treinamento treinamento, DadosPresenca dadosPresenca){
+        ZoneOffset offset = ZoneOffset.of("-03:00");
+        OffsetDateTime inicioTreinamentoUTC = treinamento.getDataInicio().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
+        OffsetDateTime fimTreinamentoUTC = treinamento.getDataFim().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
+        OffsetDateTime aparelhoAlunoUTC = dadosPresenca.dataEHoraAparelhoAluno().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
+        System.out.println("Início Treinamento: " + inicioTreinamentoUTC);
+        System.out.println("Fim Treinamento: " + fimTreinamentoUTC);
+        System.out.println("Aparelho: "+aparelhoAlunoUTC);
+        Boolean isTreinamentoNoDiaEHoraCorretos = !aparelhoAlunoUTC.isBefore(inicioTreinamentoUTC) && !aparelhoAlunoUTC.isAfter(fimTreinamentoUTC.plusHours(2));
+        return isTreinamentoNoDiaEHoraCorretos;
+    }
       
     public String getImageUrl(String baseUrl,String name) throws IOException, InterruptedException {
     HttpClient client = HttpClient.newHttpClient();
