@@ -21,8 +21,7 @@ public interface TreinamentoRepository extends JpaRepository<Treinamento,Long>{
            "WHERE aa.aluno.id = :id_aluno")
     List<DadosHistoricoTreinamento> findTreinamentosByAluno(@Param("id_aluno") Long id_aluno);
 
-    @Query(value = "select  * from tb_treinamento as t where date(t.data_inicio) = curdate()",nativeQuery = true)
-    List<Treinamento> findTreinamentosDeHoje();
+
 
     @Query(value = "select * from tb_treinamento where nome like concat('%', :nome, '%')", nativeQuery = true)
     List<Treinamento> findByNome(String nome);

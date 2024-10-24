@@ -159,10 +159,11 @@ public ResponseEntity registrarPresenca(@RequestBody DadosPresenca dadosPresenca
 }
 
     public Boolean verificaDiaEHorarioValidacao(Treinamento treinamento, DadosPresenca dadosPresenca){
-        ZoneOffset offset = ZoneOffset.of("-03:00");
-        OffsetDateTime inicioTreinamentoUTC = treinamento.getDataInicio().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
-        OffsetDateTime fimTreinamentoUTC = treinamento.getDataFim().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
-        OffsetDateTime aparelhoAlunoUTC = dadosPresenca.dataEHoraAparelhoAluno().atOffset(offset).toInstant().atOffset(ZoneOffset.UTC);
+        ZoneOffset offsetTreinamento = ZoneOffset.of(dadosPresenca.timezone());
+        ZoneOffset offsetAluno = ZoneOffset.of(treinamento.getTimezone());
+        OffsetDateTime inicioTreinamentoUTC = treinamento.getDataInicio().atOffset(offsetTreinamento).toInstant().atOffset(ZoneOffset.UTC);
+        OffsetDateTime fimTreinamentoUTC = treinamento.getDataFim().atOffset(offsetTreinamento).toInstant().atOffset(ZoneOffset.UTC);
+        OffsetDateTime aparelhoAlunoUTC = dadosPresenca.dataEHoraAparelhoAluno().atOffset(offsetAluno).toInstant().atOffset(ZoneOffset.UTC);
         System.out.println("Início Treinamento: " + inicioTreinamentoUTC);
         System.out.println("Fim Treinamento: " + fimTreinamentoUTC);
         System.out.println("Aparelho: "+aparelhoAlunoUTC);
