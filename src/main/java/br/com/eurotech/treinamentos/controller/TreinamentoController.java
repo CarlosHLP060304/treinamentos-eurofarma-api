@@ -1,5 +1,8 @@
 package br.com.eurotech.treinamentos.controller;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,10 +55,22 @@ public class TreinamentoController {
         return ResponseEntity.ok(treinamentos);
     }
 
-    @GetMapping("/hoje")
-    public ResponseEntity<List<DadosDetalhamentoTreinamento>> findTreinamentosDeHoje(){
-        List<DadosDetalhamentoTreinamento> treinamentosHoje = repository.findTreinamentosDeHoje().stream().map(DadosDetalhamentoTreinamento::new).toList();
+    @GetMapping("{idAluno}/hoje")
+    public ResponseEntity<List<DadosHistoricoTreinamento>> findTreinamentosDeHoje(@PathVariable("idAluno")Long idAluno,@RequestParam("diaEHoraAparelhoFuncionario") String diaEHoraAparelhoFuncionario){
+        List<DadosHistoricoTreinamento> treinamentosHoje = returnTreinamentosDeHoje(idAluno,diaEHoraAparelhoFuncionario);
         return ResponseEntity.ok(treinamentosHoje);
+    }
+
+    public List<DadosHistoricoTreinamento> returnTreinamentosDeHoje(Long idAluno,String diaEHoraAparelhoFuncionarioString){
+        List<DadosHistoricoTreinamento> treinamentos = repository.findTreinamentosByAluno(idAluno);
+        List<DadosHistoricoTreinamento> treinamentosHoje = new ArrayList<>();
+        LocalDateTime diaEHoraAparelhoFuncionario = LocalDateTime.parse(diaEHoraAparelhoFuncionarioString);
+         for (DadosHistoricoTreinamento treinamento : treinamentos) {
+             if(treinamento.data_inicio().toLocalDate().isEqual(diaEHoraAparelhoFuncionario.toLocalDate())){
+                treinamentosHoje.add(treinamento);
+             }
+         }
+         return treinamentosHoje;
     }
 
     @GetMapping("/search")
