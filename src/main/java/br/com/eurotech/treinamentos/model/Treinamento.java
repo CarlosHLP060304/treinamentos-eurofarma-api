@@ -65,6 +65,7 @@ public class Treinamento {
         this.dataFim = dto.dataFim();
         this.descricao = dto.descricao();
         this.formato = dto.formato();
+        this.timezone = dto.timezone();
     }
 
 
